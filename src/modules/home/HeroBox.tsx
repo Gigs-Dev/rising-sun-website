@@ -31,13 +31,13 @@ const HeroBox = () => {
             Discover popular games, fund your wallet and start winning...{" "}
           </Text>
           <HStack className="inline-flex my-[.5rem] bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[2rem] gap-2 ml-[1rem]">
-            <Image priority src={CubeIcon} alt="game" width={32} height={32} />
+            <Image priority src={CubeIcon} alt="game" width={28} height={28} />
             <Text className="text-[#000] text-[.9rem] pt-[3px]">
               Start Playing
             </Text>
           </HStack>
           <HStack className="inline-flex my-[.5rem] border border-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[2rem] gap-2 ml-[1rem]">
-            <Image priority src={ApkIcon} alt="apk" width={32} height={32} />
+            <Image priority src={ApkIcon} alt="apk" width={28} height={28} />
             <Text className="text-[#ffffff] text-[.9rem] pt-[3px]">
               Download APK
             </Text>
