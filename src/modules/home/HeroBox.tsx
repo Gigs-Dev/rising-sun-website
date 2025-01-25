@@ -16,21 +16,25 @@ const HeroBox = () => {
         <Box className="py-[2rem]">
           <Text
             className={
-              "font-medium text-[3.2rem] md:text-[3.8rem] md:tracking-normal md:leading-[4rem] leading-[4rem]"
+              "font-medium text-[3.1rem] md:text-[3.7rem] md:tracking-normal md:leading-[4rem] leading-[3.6rem] relative"
             }
           >
             Prepare to <br />
-            Explore, Play <br />
-            and Win Games
+            explore, play <br />
+            and{" "}
+            <span className="relative inline-block">
+              win games
+              <span className="absolute bottom-[8px] left-0 w-full h-[4px] bg-[#ffba08]"></span>
+            </span>
           </Text>
           <Text
             className={
-              "font-regular text-[1rem] md:text-[1.2rem] ml-[1rem] leading-[30px]"
+              "font-regular text-[1rem] md:text-[1.1rem] ml-[1rem] leading-[30px] mt-[.4rem]"
             }
           >
-            Discover popular games, fund your wallet and start winning...{" "}
+            Discover popular games, fund your wallet and start winning{" "}
           </Text>
-          <HStack className="inline-flex my-[.5rem] bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[2rem] gap-2 ml-[1rem]">
+          <HStack className="inline-flex my-[.5rem] bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[2rem] gap-2 ml-[1rem] mt-[20px]">
             <Image priority src={CubeIcon} alt="game" width={28} height={28} />
             <Text className="text-[#000] text-[.9rem] pt-[3px]">
               Start Playing
@@ -45,7 +49,7 @@ const HeroBox = () => {
         </Box>
 
         {/* right */}
-        <Image priority src={GameIcon} alt="game" width={450} height={450} />
+        <Image priority src={GameIcon} alt="game" width={430} height={430} />
       </HStack>
     </Box>
   );

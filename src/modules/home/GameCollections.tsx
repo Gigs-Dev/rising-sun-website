@@ -5,7 +5,7 @@ import { Text } from "@/ui/primitives/typography";
 const GameCollections = () => {
   return (
     <Box className="my-[5rem] border-t-[1px] border-t-[#999] py-[1.5rem]">
-      <Text className="text-center font-semibold text-[2rem] tracking-[.2px]">
+      <Text className="text-center font-semibold text-[1.8rem] tracking-[.1px]">
         GAME COLLECTIONS
       </Text>
     </Box>
