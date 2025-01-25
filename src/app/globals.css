@@ -3,8 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: transparent;
+  --foreground: #ffffff;
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+  --font-weight-regular: 400;
+  --font-weight-light: 300;
+
+  /* Use the variable injected by next/font/local */
+  --font-founders: "founders";
 }
 
 @media (prefers-color-scheme: dark) {
@@ -16,6 +24,42 @@
 
 body {
   color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(
+      ellipse at center,
+      rgba(92, 52, 156, 0.6) 15%,
+      rgba(17, 17, 29, 1) 85%
+    ),
+    linear-gradient(to bottom, #0a0a0a, #171717);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  overflow-y: auto;
+  font-family: var(--font-founders), sans-serif;
+  margin: 0;
+}
+
+.font-bold {
+  font-family: var(--font-founders), sans-serif;
+  font-weight: var(--font-weight-bold);
+}
+
+.font-semibold {
+  font-family: var(--font-founders), sans-serif;
+  font-weight: var(--font-weight-semibold);
+}
+
+.font-medium {
+  font-family: var(--font-founders), sans-serif;
+  font-weight: var(--font-weight-medium);
+}
+
+.font-regular {
+  font-family: var(--font-founders), sans-serif;
+  font-weight: var(--font-weight-regular);
+}
+
+.font-light {
+  font-family: var(--font-founders), sans-serif;
+  font-weight: var(--font-weight-light);
 }
