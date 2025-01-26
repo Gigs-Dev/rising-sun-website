@@ -1,14 +1,14 @@
+import React from "react";
 import { Box } from "@/ui/primitives/ui-layout";
 import { Text } from "@/ui/primitives/typography";
-import React from "react";
 
 const Footer = () => {
   return (
     <Box
-      className="w-full h-[500px]"
+      className="w-full py-[3rem] px-[5rem] flex flex-col lg:flex-row justify-around items-start"
       style={{ backgroundColor: "rgba(75, 49, 106, 0.3)" }}
     >
-      <Text>footer</Text>
+      <Text>FOOTER</Text>
     </Box>
   );
 };

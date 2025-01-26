@@ -27,6 +27,21 @@ export const founders = localFont({
       weight: "300",
       style: "normal",
     },
+    {
+      path: "./local-fonts/FoundersGrotesk-BoldItalic.otf",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "./local-fonts/FoundersGrotesk-MediumItalic.otf",
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "./local-fonts/FoundersGrotesk-RegularItalic.otf",
+      weight: "50",
+      style: "normal",
+    },
   ],
   variable: "--font-founders",
 });

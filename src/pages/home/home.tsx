@@ -7,7 +7,7 @@ const MainLayout = ({ children }: { children?: React.ReactNode }) => {
     <Box className="min-h-screen flex flex-col">
       <Header />
       <Box className="flex-grow">
-        <Box className="flex-grow p-[5rem]">{children}</Box>
+        <Box className="flex-grow md:p-[5rem] p-[1rem]">{children}</Box>
         <Footer />
       </Box>
     </Box>

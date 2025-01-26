@@ -16,13 +16,13 @@ const HeroBox = () => {
         <Box className="py-[2rem]">
           <Text
             className={
-              "font-medium text-[3.1rem] md:text-[3.7rem] md:tracking-normal md:leading-[4rem] leading-[3.6rem] relative"
+              "font-medium text-[2.5rem] md:text-[3.5rem] md:tracking-normal md:leading-[4rem] leading-[3.6rem] relative"
             }
           >
-            Prepare to <br />
+            <span className="text-[#eee]">Prepare</span> to <br />
             explore, play <br />
             and{" "}
-            <span className="relative inline-block">
+            <span className="relative inline-block font-bold-italic">
               win games
               <span className="absolute bottom-[8px] left-0 w-full h-[4px] bg-[#ffba08]"></span>
             </span>
@@ -34,14 +34,14 @@ const HeroBox = () => {
           >
             Discover popular games, fund your wallet and start winning{" "}
           </Text>
-          <HStack className="inline-flex my-[.5rem] bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[2rem] gap-2 ml-[1rem] mt-[20px]">
-            <Image priority src={CubeIcon} alt="game" width={28} height={28} />
+          <HStack className="inline-flex my-[.5rem] bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[1.5rem] gap-2 ml-[1rem] mt-[20px] items-center justify-center">
+            <Image priority src={CubeIcon} alt="game" width={26} height={26} />
             <Text className="text-[#000] text-[.9rem] pt-[3px]">
               Start Playing
             </Text>
           </HStack>
-          <HStack className="inline-flex my-[.5rem] border border-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[2rem] gap-2 ml-[1rem]">
-            <Image priority src={ApkIcon} alt="apk" width={28} height={28} />
+          <HStack className="inline-flex my-[.5rem] border border-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[1.5rem] gap-2 ml-[1rem] items-center justify-center">
+            <Image priority src={ApkIcon} alt="apk" width={26} height={26} />
             <Text className="text-[#ffffff] text-[.9rem] pt-[3px]">
               Download APK
             </Text>
@@ -49,7 +49,7 @@ const HeroBox = () => {
         </Box>
 
         {/* right */}
-        <Image priority src={GameIcon} alt="game" width={430} height={430} />
+        <Image priority src={GameIcon} alt="game" width={420} height={420} />
       </HStack>
     </Box>
   );

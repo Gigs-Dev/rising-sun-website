@@ -10,6 +10,9 @@
   --font-weight-medium: 500;
   --font-weight-regular: 400;
   --font-weight-light: 300;
+  --font-weight-bold-italic: 200;
+  --font-weight-medium-italic: 100;
+  --font-weight-regular-italic: 100;
 
   /* Use the variable injected by next/font/local */
   --font-founders: "founders";
@@ -62,4 +65,19 @@ body {
 .font-light {
   font-family: var(--font-founders), sans-serif;
   font-weight: var(--font-weight-light);
+}
+
+.font-bold-italic {
+  font-family: var(--font-founders), sans-serif;
+  font-weight: var(--font-weight-bold-italic);
+}
+
+.font-medium-italic {
+  font-family: var(--font-founders), sans-serif;
+  font-weight: var(--font-weight-medium-italic);
+}
+
+.font-regular-italic {
+  font-family: var(--font-founders), sans-serif;
+  font-weight: var(--font-weight-regular-italic);
 }
