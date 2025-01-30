@@ -49,7 +49,9 @@ const Header = () => {
         {/* Menu items */}
         <Flex
           className={`${isMenuOpen ? "flex" : "hidden"} ${
-            isMenuOpen ? "border-b border-[#555]" : "border-none"
+            isMenuOpen
+              ? "border-b border-[#555] bg-[rgba(92,52,156,0.4)] w-[90%] left-1/2 transform -translate-x-1/2 rounded-b-[10px]"
+              : "border-none"
           } lg:flex flex-col lg:flex-row lg:items-center lg:gap-8 absolute lg:static top-[4.4rem] left-0 w-full lg:w-auto bg-transparent backdrop-blur lg:backdrop-blur-none lg:bg-transparent p-4 lg:p-0`}
         >
           {TopBarData.map((item) => (
