@@ -50,7 +50,7 @@ const Header = () => {
         <Flex
           className={`${isMenuOpen ? "flex" : "hidden"} ${
             isMenuOpen
-              ? "border-b border-[#555] bg-[#f5f5f5] w-[96%] left-1/2 transform -translate-x-1/2 rounded-b-[10px]"
+              ? "border-b border-[#555] bg-[#f5f5f5] w-[96%] left-1/2 transform -translate-x-1/2 rounded-b-[10px] rounded-t-[4px]"
               : "border-none"
           } lg:flex flex-col lg:flex-row lg:items-center lg:gap-8 absolute lg:static top-full left-0 w-full lg:w-auto backdrop-blur lg:backdrop-blur-none lg:bg-transparent p-4 lg:p-0`}
         >
