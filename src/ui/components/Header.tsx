@@ -50,22 +50,26 @@ const Header = () => {
         <Flex
           className={`${isMenuOpen ? "flex" : "hidden"} ${
             isMenuOpen
-              ? "border-b border-[#555] bg-[rgba(92,52,156,0.4)] w-[90%] left-1/2 transform -translate-x-1/2 rounded-b-[10px]"
+              ? "border-b border-[#555] bg-[#f5f5f5] w-[90%] left-1/2 transform -translate-x-1/2 rounded-b-[10px]"
               : "border-none"
-          } lg:flex flex-col lg:flex-row lg:items-center lg:gap-8 absolute lg:static top-[4.4rem] left-0 w-full lg:w-auto bg-transparent backdrop-blur lg:backdrop-blur-none lg:bg-transparent p-4 lg:p-0`}
+          } lg:flex flex-col lg:flex-row lg:items-center lg:gap-8 absolute lg:static top-[4.4rem] left-0 w-full lg:w-auto backdrop-blur lg:backdrop-blur-none lg:bg-transparent p-4 lg:p-0`}
         >
           {TopBarData.map((item) => (
             <Box
               key={item.name}
               className={`text-[.9rem] cursor-pointer pt-1 ${
-                isMenuOpen ? "py-[20px]" : "py-[0px]"
+                isMenuOpen ? "py-[20px] text-[#000000]" : "py-[0px]"
               } font-regular`}
             >
               {item.name}
             </Box>
           ))}
 
-          <HStack className="inline-flex bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[1.3rem] gap-2 cursor-pointer">
+          <HStack
+            className={`${
+              isMenuOpen ? "border border-[#555]" : ""
+            } inline-flex bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[1.3rem] gap-2 cursor-pointer`}
+          >
             <Text className="text-[.9rem] text-[#000000] font-regular pt-1">
               Account Sign In
             </Text>
