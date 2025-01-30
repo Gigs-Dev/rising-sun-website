@@ -23,7 +23,7 @@ const Header = () => {
     <Flex className="fixed top-[1px] left-0 w-full md:justify-around justify-between px-4 py-5 bg-transparent z-50">
       {/* Links container */}
       <Flex
-        className={`lg:flex border border-[#555] rounded-[10px] px-3 py-1.5 bg-transparent backdrop-blur gap-8 w-full justify-between items-center lg:max-w-[800px] lg:mx-auto`}
+        className={`lg:flex border border-[#555] rounded-[10px] px-3 py-1.5 bg-transparent backdrop-blur gap-8 w-full justify-between items-center lg:max-w-[800px] lg:mx-auto relative`} // Added `relative` here
       >
         <Box className="ml-[1rem]">
           <Image
@@ -50,9 +50,9 @@ const Header = () => {
         <Flex
           className={`${isMenuOpen ? "flex" : "hidden"} ${
             isMenuOpen
-              ? "border-b border-[#555] bg-[#f5f5f5] w-[90%] left-1/2 transform -translate-x-1/2 rounded-b-[10px]"
+              ? "border-b border-[#555] bg-[#f5f5f5] w-[96%] left-1/2 transform -translate-x-1/2 rounded-b-[10px]"
               : "border-none"
-          } lg:flex flex-col lg:flex-row lg:items-center lg:gap-8 absolute lg:static top-[4.4rem] left-0 w-full lg:w-auto backdrop-blur lg:backdrop-blur-none lg:bg-transparent p-4 lg:p-0`}
+          } lg:flex flex-col lg:flex-row lg:items-center lg:gap-8 absolute lg:static top-full left-0 w-full lg:w-auto backdrop-blur lg:backdrop-blur-none lg:bg-transparent p-4 lg:p-0`}
         >
           {TopBarData.map((item) => (
             <Box
