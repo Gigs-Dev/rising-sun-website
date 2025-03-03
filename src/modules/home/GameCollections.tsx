@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Box, HStack } from "@/ui/primitives/ui-layout";
 import { Text } from "@/ui/primitives/typography";
 import { GameCollectionsList } from "@/data/game-collections";
+import Link from 'next/link'
 
 // ICONS
 import BrIcon from "@/svgs/br.svg";
@@ -20,15 +21,17 @@ const GameCollections = () => {
       <Box className="flex flex-col items-center">
         {/* GAME LISTING */}
         <HStack className="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-10 mt-5 justify-center items-center">
-          {GameCollectionsList.map((game, index) => {
+          {GameCollectionsList.map((game) => {
             const { name } = game;
             return (
-              <Box key={String(index)} className="flex flex-col items-center">
-                <Box className="border border-[#888] w-[20rem] h-[20rem] md:w-[17rem] md:h-[17rem] rounded-[20px] py-[1rem] px-[1rem] flex items-center justify-center">
-                  <Image alt="img" src={GameIcon} width={200} height={200} />
+              <Link href={game.link} key={game.link}>
+                <Box className="flex flex-col items-center">
+                  <Box className="border border-[#888] w-[20rem] h-[20rem] md:w-[17rem] md:h-[17rem] rounded-[20px] py-[1rem] px-[1rem] flex items-center justify-center">
+                    <Image alt="img" src={GameIcon} width={200} height={200} />
+                  </Box>
+                  <Text className="mt-[10px]">{name}</Text>
                 </Box>
-                <Text className="mt-[10px]">{name}</Text>
-              </Box>
+              </Link>
             );
           })}
         </HStack>

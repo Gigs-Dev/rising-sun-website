@@ -1,26 +1,26 @@
 export const GameCollectionsList = [
   {
     name: "Rush Solo",
-    link: "help",
+    link: "rush",
   },
   {
     name: "Sporty Hero",
-    link: "about",
+    link: "/link",
   },
   {
     name: "Aviator",
-    link: "about",
+    link: "/aviator",
   },
   {
     name: "Guess & Win",
-    link: "help",
+    link: "guess",
   },
   {
     name: "Dice",
-    link: "about",
+    link: "dice",
   },
   {
     name: "Ludo",
-    link: "about",
+    link: "ludo",
   },
 ];
