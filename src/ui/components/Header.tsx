@@ -4,6 +4,7 @@ import { Box, Flex, HStack } from "@/ui/primitives/ui-layout";
 import { Text } from "@/ui/primitives/typography";
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 // icons
 import LogoIcon from "@/svgs/logo.svg";
@@ -76,9 +77,11 @@ const Header = () => {
                 isMenuOpen ? "border border-[#555]" : ""
               } inline-flex bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[1.3rem] gap-2 cursor-pointer`}
             >
-              <Text className="text-[.9rem] text-[#000000] font-regular pt-1">
-                Account Sign In
-              </Text>
+              <Link href="/login">
+                <Text className="text-[.9rem] text-[#000000] font-regular pt-1">
+                  Account Sign In
+                </Text>
+              </Link>
               <Image
                 priority
                 src={BrIcon}
