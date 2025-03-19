@@ -81,3 +81,11 @@ body {
   font-family: var(--font-founders), sans-serif;
   font-weight: var(--font-weight-regular-italic);
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
