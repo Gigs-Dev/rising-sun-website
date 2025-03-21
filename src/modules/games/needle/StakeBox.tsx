@@ -4,7 +4,7 @@ import React from 'react'
 
 const StakeBox = () => {
   return (
-    <div className='flex items-center mx-auto w-[170px] border-[0.1px] border-[#999] gap-4 p-1'>
+    <div className='flex items-center mx-auto w-[170px] border-[0.1px] border-[#999] gap-4 p-1 rounded-md'>
         <Span text='Stake:' className='text-[12px]'/>
         <TextField type='tel' className='bg-transparent' placeholder=''/>
     </div>
