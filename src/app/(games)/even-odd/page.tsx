@@ -262,7 +262,7 @@ const EvenOdd = () => {
   return (
     <>
       <Box className='m-auto mt-5 w-[400px] h-full p-2 shadow-xl'>
-        <Box className='even-odd-bg w-full rounded-b-[10%] border-[10px] border-t-0 border-[#17a2b8] pb-10'>
+        <Box className='even-odd-bg w-full rounded-b-[10%] border-[10px] border-t-0 border-[#17a2b8] pb-8'>
           {/* Header */}
           <Box className="p-5 text-white">
             <HStack className="justify-between items-center">
@@ -328,17 +328,18 @@ const EvenOdd = () => {
                     ) : (
                       <></>
                     )}
-                    <Flex className='items-center h-full px-3 justify-between w-[40%] m-auto border border-black'>
-                      <Text className='font-semibold'>Bet</Text>
-                      <Flex className='items-center'>
+                    <Flex className='h-full px-3 justify-between w-[40%] m-auto border border-black'>
+                      <p className='font-semibold relative top-[2px]'>Bet</p>
+                      <Flex className='gap-1'>
                         <Image
                           src={emptyChipIcon}
                           alt="chip"
                           width={20}
                           height={20}
                           style={{ width: `20px`, height: '20px' }}
+                          className='flex-shrink-0'
                         />
-                        <Text className='font-semibold'>{formattedBetAmount}</Text>
+                        <p className='font-semibold relative top-[2px]'>{formattedBetAmount}</p>
                       </Flex>
                     </Flex>
                   </Box>
@@ -378,7 +379,7 @@ const EvenOdd = () => {
                   </Box>
 
                   {/* Chip Carousel */}
-                  <Box className='mt-8 px-4'>
+                  <Box className='mt-8 px-2'>
                     <ChipCarousel onSelect={(value) => handleChipSelection(value)} />
                     <Flex className='justify-center gap-10 text-gray-400 font-semibold'>
                       <span>Min: {MIN_BET}</span>
@@ -391,47 +392,26 @@ const EvenOdd = () => {
               {/* Result display */}
               {result && (
                 <Box className="mt-4 text-center h-[200px]">
-                  <Text className='font-bold text-lg'>
-                    {/* {userChoice?.toUpperCase()} */}
-                    {result ? 
-                      (userChoice === 'even' ? 
-                        (isEven ? (
-                          <Box className='px-3 py-2 w-[50%] font-semibold text-[1.5rem] bg-[#0a9737] m-auto mt-8'>
-                            EVEN
-                          </Box>
-                        ) : (
-                          <Box className='px-3 py-2 w-[50%] font-semibold text-[1.5rem] bg-[#de9244] m-auto mt-8'>
-                            ODD
-                          </Box>
-                        )) : (
-                          !isEven ? (
-                            <Box className='px-3 py-2 w-[50%] font-semibold text-[1.5rem] bg-[#de9244] m-auto mt-8'>
-                              ODD
-                            </Box>
-                          ) : (
-                            <Box className='px-3 py-2 w-[50%] font-semibold text-[1.5rem] bg-[#0a9737] m-auto mt-8'>
-                              EVEN
-                            </Box>
-                          )
-                      )) : (<></>)
-                    }
-                    
-                  </Text>
+                  {/* Display whether the dice roll was Even or Odd */}
+                  <Box 
+                    className={`px-3 py-2 w-[50%] font-semibold text-[1.5rem] m-auto mt-8 
+                      ${isEven ? "bg-[#0a9737]" : "bg-[#de9244]"}`}
+                  >
+                    {isEven ? "EVEN" : "ODD"}
+                  </Box>
+
+                  {/* Display the result based on user choice */}
                   <Text className={`${result.includes("won") ? "text-green-500" : "text-red-500"} mt-3`}>
-                    {result.includes("won") ? (
-                      <>
-                        {result}
-                      </>
-                    ) : (
-                      <>
-                        {result.concat(`You chose ${userChoice}`)}
-                      </>
-                      
-                    )}
-                    {/* {result} */}
+                    {result.includes("won") 
+                      ? result 
+                      : userChoice 
+                        ? `${result}. You chose ${userChoice.toUpperCase()}`
+                        : `${result}. No choice was made`}
                   </Text>
+
                 </Box>
               )}
+
             </>
           )}
         </Box>

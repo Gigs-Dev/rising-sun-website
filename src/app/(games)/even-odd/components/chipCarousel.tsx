@@ -1,6 +1,9 @@
 import React, { useRef } from 'react';
 import Image, { StaticImageData } from 'next/image';
 import { Box, Flex } from "@/ui/primitives/ui-layout";
+import { FaGreaterThan } from "react-icons/fa6";
+import { FaLessThan } from "react-icons/fa6";
+
 // import { Text } from '@/ui/primitives/typography';
 
 import thirtyChipIcon from "@/svgs/30_casino_chips.svg";
@@ -58,13 +61,15 @@ const ChipCarousel: React.FC<ChipCarouselProps> =  ({ onSelect }) => {
         onSelect(value);
     };
   return (
-    <Flex className='items-center gap-2 w-full overflow-hidden '>
+    <Flex className='items-center gap-1 w-full overflow-hidden '>
         {/* Left scroll button */}
         <button 
             onClick={() => scroll(-1)}
-            className='bg-[rgba(0,0,0,.5)] text-[1.5rem] text-white w-[26px] h-[24px] flex items-center justify-center rounded-full hover:bg-gray-700'
+            className='bg-[rgba(0,0,0,.5)] text-[1.5rem] text-white px-2 py-2 rounded-full hover:bg-gray-700'
         >
-            <span className='m-auto'>&lt;</span>
+            <span className='text-[.6rem]'>
+                <FaLessThan />
+            </span>
         </button>
 
         {/* Chips Container */}
@@ -78,22 +83,24 @@ const ChipCarousel: React.FC<ChipCarouselProps> =  ({ onSelect }) => {
                     <Image 
                         src={chip.image}
                         alt={`Chip ${chip.value}`}
-                        width={60}
-                        height={60}
+                        width={50}
+                        height={50}
                         className='pointer-events-none'
                     />
 
                     {/* Chip Value Text */}
-                    <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black text-sm'>{convert(chip.value)}</span>
+                    <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black text-[.6rem]'>{convert(chip.value)}</span>
                 </Box>
             ))}
         </div>
         {/* Right Scroll button */}
         <button
             onClick={() => scroll(1)}
-            className='bg-[rgba(0,0,0,.5)] text-[1.5rem] text-white w-[26px] h-[24px] rounded-full hover:bg-gray-700'
+            className='bg-[rgba(0,0,0,.5)] text-[1.5rem] text-white px-2 py-2 rounded-full hover:bg-gray-700'
         >
-            <span className=''>&gt;</span>
+            <span className='text-[.6rem]'>
+                <FaGreaterThan />
+            </span>
         </button>
     </Flex>
   )
