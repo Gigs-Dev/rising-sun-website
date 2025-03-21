@@ -16,8 +16,8 @@ export const GameCollectionsList = [
     link: "/guess",
   },
   {
-    name: "Dice",
-    link: "/dice",
+    name: "EvenOdd",
+    link: "/even-odd",
   },
   {
     name: "Ludo",
