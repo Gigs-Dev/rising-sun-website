@@ -8,9 +8,11 @@ export const metadata = {
 
 const GamesLayout = ({children}: {children: React.ReactNode}) => {
   return (
-    <div className='flex flex-col min-h-screen'>
+    <div className='flex flex-col min-h-screen gap-0'>
         <Navbar/>
-        <div className="">{children}</div>
+        <div className="flex justify-center items-center h-full w-full md:w-1/3 xl:w-1/2 m-auto border-x-2 bg-[#FF8042]">
+            <div className="">{children}</div>
+        </div>
     </div>
   )
 }
