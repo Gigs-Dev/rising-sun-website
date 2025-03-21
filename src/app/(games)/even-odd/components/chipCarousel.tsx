@@ -62,13 +62,13 @@ const ChipCarousel: React.FC<ChipCarouselProps> =  ({ onSelect }) => {
         {/* Left scroll button */}
         <button 
             onClick={() => scroll(-1)}
-            className='bg-gray-800 text-[1.5rem] text-white px-[.5rem] flex items-center justify-center rounded-full hover:bg-gray-700'
+            className='bg-[rgba(0,0,0,.5)] text-[1.5rem] text-white w-[26px] h-[24px] flex items-center justify-center rounded-full hover:bg-gray-700'
         >
-            &lt;
+            <span className='m-auto'>&lt;</span>
         </button>
 
         {/* Chips Container */}
-        <div ref={carouselRef} className='flex overflow-x-auto scroll-smooth no-scrollbar w-full rounded-full bg-blue-800'>
+        <div ref={carouselRef} className='flex overflow-x-auto scroll-smooth no-scrollbar w-full rounded-full bg-[rgba(0,0,0,.5)]'>
             {chips.map((chip) => (
                 <Box
                     key={chip.value}
@@ -91,9 +91,9 @@ const ChipCarousel: React.FC<ChipCarouselProps> =  ({ onSelect }) => {
         {/* Right Scroll button */}
         <button
             onClick={() => scroll(1)}
-            className='bg-gray-800 text-[1.5rem] text-white px-[.5rem] flex items-center justify-center rounded-full hover:bg-gray-700'
+            className='bg-[rgba(0,0,0,.5)] text-[1.5rem] text-white w-[26px] h-[24px] rounded-full hover:bg-gray-700'
         >
-            &gt;
+            <span className=''>&gt;</span>
         </button>
     </Flex>
   )

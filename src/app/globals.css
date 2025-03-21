@@ -89,3 +89,9 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.even-odd-bg {
+  background-image: 
+    radial-gradient(44% 21% at 50% 34%, #089eCC, hsla(0, 0%, 100%, 0) 137%),
+    linear-gradient(180deg,#0783ab,#00698a);
+}
