@@ -5,5 +5,11 @@ interface UIProps {
     onClick?: () => void;
   }
   
-  export type { UIProps };
+
+  interface SpanTypes {
+    text: string;
+    className: string;
+
+  }
+  export type { UIProps, SpanTypes };
   
