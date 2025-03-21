@@ -1,7 +1,7 @@
 export const GameCollectionsList = [
   {
-    name: "Rush Solo",
-    link: "/rush",
+    name: "Spin and Win",
+    link: "/spin",
   },
   {
     name: "Sporty Hero",
