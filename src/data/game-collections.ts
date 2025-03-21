@@ -4,8 +4,8 @@ export const GameCollectionsList = [
     link: "/spin",
   },
   {
-    name: "Sporty Hero",
-    link: "/sportyhero",
+    name: "Needle Pointer",
+    link: "/needle",
   },
   {
     name: "Aviator",

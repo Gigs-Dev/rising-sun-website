@@ -1,3 +1,4 @@
+import Navbar from '@/ui/components/games/Navbar';
 import React from 'react';
 
 export const metadata = {
@@ -7,7 +8,8 @@ export const metadata = {
 
 const GamesLayout = ({children}: {children: React.ReactNode}) => {
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col min-h-screen'>
+        <Navbar/>
         <div className="">{children}</div>
     </div>
   )
