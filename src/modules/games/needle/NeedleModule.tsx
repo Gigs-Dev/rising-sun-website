@@ -1,0 +1,82 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+
+const RADIAN = Math.PI / 360;
+const data = [
+  { name: 'B', value: 80, color: '#00ff00' },
+  { name: 'C', value: 80, color: '#0000ff' },
+];
+
+
+const cx = 150; // Center X
+const cy = 200; // Center Y
+const iR = 75; // Inner Radius
+const oR = 100; // Outer Radius
+
+
+const Needle = () => {
+
+
+    const [value, setValue] = useState(0); 
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true); 
+    }, []);
+
+    if (!isClient) return null;
+
+    const total = data.reduce((sum, v) => sum + v.value, 0);
+    const angle = 360.0 * (1 - value / total);
+    const length = (iR + 2 * oR) / 3;
+    const sin = Math.sin(-RADIAN * angle);
+    const cos = Math.cos(-RADIAN * angle);
+    const r = 5;
+    const x0 = cx;
+    const y0 = cy;
+    const xba = x0 + r * sin;
+    const yba = y0 - r * cos;
+    const xbb = x0 - r * sin;
+    const ybb = y0 + r * cos;
+    const xp = x0 + length * cos;
+    const yp = y0 + length * sin;
+
+
+  return (
+    <div className="w-[400px] h-[350px] ml-[40px]">
+         <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+            <Pie
+                dataKey="value"
+                data={data}
+                cx={cx}
+                cy={cy}
+                startAngle={360}
+                endAngle={0}
+                paddingAngle={1}
+                innerRadius={iR}
+                outerRadius={oR}
+                fill="#8884d8"
+                stroke="none"
+            >
+                {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+            </Pie>
+
+            <svg width={400} height={500}>
+                <g>
+                <circle cx={x0} cy={y0} r={r} fill="#fff" stroke="none" />
+                <path d={`M${xba},${yba} L${xbb},${ybb} L${xp},${yp} Z`} fill="#fff" />
+                </g>
+            </svg>
+            </PieChart>
+
+         </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default Needle;
