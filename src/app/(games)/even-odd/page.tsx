@@ -7,6 +7,7 @@ import Image from "next/image";
 import { keyframes } from '@emotion/react';
 import ChipCarousel from './components/chipCarousel';
 import { useRouter } from 'next/navigation';
+import SideBar from './components/sidebar';
 
 // Icons
 import LeftarrowIcon from '@/svgs/leftarrow-2.svg';
@@ -67,6 +68,7 @@ const EvenOdd = () => {
   // const [isChoice, setIsChoice] = useState<string>("");
   const [isRolling, setIsRolling] = useState<boolean>(false);
   const [isEven, setIsEven] = useState<boolean>(false);
+  const [isSideBarOpen, setIsSideBarOpen] = useState<boolean>(false);
 
   const maxBet = walletBalance;
   const formattedBetAmount = betAmount.toLocaleString();
@@ -274,7 +276,7 @@ const EvenOdd = () => {
 
   return (
     <>
-      <Box className={`m-auto mt-5 w-[400px] h-[600px] p-2 shadow-xl ${loading ? 'h-[600px] bg-black bg-opacity-50 backdrop-blur-md rounded-md px-[2rem]' : ''}`}>
+      <Box className={`relative m-auto mt-5 w-[400px] h-[700px] p-2 shadow-xl ${loading ? 'h-[600px] bg-black bg-opacity-50 backdrop-blur-md rounded-md px-[2rem]' : ''}`}>
         {loading ? (
           <Flex className='justify-center flex-col h-full'>
             <Text className='text-lg font-bold'>Loading...</Text>
@@ -286,13 +288,17 @@ const EvenOdd = () => {
           </Flex>
         ) : (
           <>
-            <Box className='even-odd-bg w-full rounded-b-[10%] border-[10px] border-t-0 border-[#17a2b8] pb-8'>
+            <Box className=' even-odd-bg w-full rounded-b-[10%] border-[10px] border-t-0 border-[#17a2b8] pb-8'>
               {/* Header */}
               <Box className="p-5 text-white">
                 <HStack className="justify-between items-center">
                   <Image src={LeftarrowIcon} className='cursor-pointer' alt="return" width={20} height={20} onClick={() => router.back()} />
                   <Text className="font-bold text-[1.3rem]">Even-Odd Game</Text>
-                  <Image src={Burger} className="cursor-pointer" alt="menu" width={30} />
+                  <Image src={Burger} className="cursor-pointer" alt="menu" width={30} onClick={() => setIsSideBarOpen(true)} />
+                    <SideBar 
+                      isOpen={isSideBarOpen} 
+                      onClose={() => setIsSideBarOpen(false)}
+                    />
                 </HStack>
 
                 {/* Wallet */}
