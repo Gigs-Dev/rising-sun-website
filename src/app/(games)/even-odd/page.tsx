@@ -274,7 +274,7 @@ const EvenOdd = () => {
 
   return (
     <>
-      <Box className={`m-auto mt-5 w-[400px] h-full p-2 shadow-xl ${loading ? 'h-[600px] bg-black bg-opacity-50 backdrop-blur-md rounded-md px-[2rem]' : ''}`}>
+      <Box className={`m-auto mt-5 w-[400px] h-[600px] p-2 shadow-xl ${loading ? 'h-[600px] bg-black bg-opacity-50 backdrop-blur-md rounded-md px-[2rem]' : ''}`}>
         {loading ? (
           <Flex className='justify-center flex-col h-full'>
             <Text className='text-lg font-bold'>Loading...</Text>
@@ -298,7 +298,7 @@ const EvenOdd = () => {
                 {/* Wallet */}
                 <Flex className="items-center gap-2 mt-6">
                   <Image src={Wallet} alt="wallet" width={20} height={20} />
-                  <Text className="text-[1rem]">NGN{walletBalance.toLocaleString()}</Text>
+                  <Text className="text-[1rem] relative top-[5px]">NGN{walletBalance.toLocaleString()}</Text>
                 </Flex>
                 <Text className="mt-2 text-green-500">+ Add Money</Text>
               </Box>
