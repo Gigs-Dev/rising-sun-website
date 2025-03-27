@@ -6,6 +6,7 @@ import { Text } from '@/ui/primitives/typography';
 import Image from "next/image";
 import { keyframes } from '@emotion/react';
 import ChipCarousel from './components/chipCarousel';
+import { useRouter } from 'next/navigation';
 
 // Icons
 import LeftarrowIcon from '@/svgs/leftarrow-2.svg';
@@ -43,6 +44,24 @@ const EvenOdd = () => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [chipPosition, setChipPosition] = useState<number>(0); // 0 - 100%
   const isDragging = useRef<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [progress, setProgress] = useState<number>(0);
+  const router = useRouter();
+
+  // Handle the initial loading
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setLoading(false);
+          return 100;
+        }
+        return prev + 5;
+      });
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
 
   // Handle win and loses
   // const [isChoice, setIsChoice] = useState<string>("");
@@ -132,12 +151,6 @@ const EvenOdd = () => {
     setWalletBalance(newBalance);
     setIsRolling(false);
 
-    // Reset Game After 3s
-    // setTimeout(() => {
-    //   setDice([0, 0, 0]);
-    //   setUserChoice(null);
-    //   setResult("");
-    // }, 3000);
   };
 
   const handleNewRound = () => {
@@ -261,198 +274,211 @@ const EvenOdd = () => {
 
   return (
     <>
-      <Box className='m-auto mt-5 w-[400px] h-full p-2 shadow-xl'>
-        <Box className='even-odd-bg w-full rounded-b-[10%] border-[10px] border-t-0 border-[#17a2b8] pb-8'>
-          {/* Header */}
-          <Box className="p-5 text-white">
-            <HStack className="justify-between items-center">
-              <Image src={LeftarrowIcon} alt="return" width={20} height={20} />
-              <Text className="font-bold text-[1.3rem]">Even-Odd Game</Text>
-              <Image src={Burger} alt="menu" width={30} />
-            </HStack>
-
-            {/* Wallet */}
-            <Flex className="items-center gap-2 mt-6">
-              <Image src={Wallet} alt="wallet" width={20} height={20} />
-              <Text className="text-[1rem]">NGN{walletBalance.toLocaleString()}</Text>
-            </Flex>
-            <Text className="mt-2 text-green-500">+ Add Money</Text>
-          </Box>
-
-          {/* Dice */}
-          <Flex className='gap-4 justify-center items-center mt-5'>
-            {dice.map((value, index) => (
-              <Box
-                key={index}
-                className={`w-16 h-16 bg-white border-2 border-black grid grid-cols-3 grid-rows-3 gap-1 p-1 rounded-md ${rolling[index] ? "animate-spin" : ""}`}
-                style={{
-                  cursor: value === 0 ? "pointer" : "not-allowed",
-                  animation: rolling[index] ? `${spin} 0.5s linear` : "none",
-                }}
-              >
-                {value !== 0 && diceFaces[value as 1 | 2 | 3 | 4 | 5 | 6].map((row: boolean[], rowIndex: number) =>
-                  row.map((dot: boolean, colIndex: number) => (
-                    <Box
-                      key={`${rowIndex}-${colIndex}`}
-                      className={`w-2 h-2 rounded-full ${dot ? "bg-black" : "bg-transparent"}`}
-                      style={{ justifySelf: "center", alignSelf: "center" }}
-                    >
-                      <></>
-                    </Box>
-                  ))
-                )}
+      <Box className={`m-auto mt-5 w-[400px] h-full p-2 shadow-xl ${loading ? 'h-[600px] bg-black bg-opacity-50 backdrop-blur-md rounded-md px-[2rem]' : ''}`}>
+        {loading ? (
+          <Flex className='justify-center flex-col h-full'>
+            <Text className='text-lg font-bold'>Loading...</Text>
+            <Box className='w-full bg-gray-300 h-2 rounded-full mt-2'>
+              <Box className='bg-blue-500 h-2 rounded-full transition-all duration-200' style={{ width: `${progress}%` }}>
+                <></>
               </Box>
-            ))}
-          </Flex>
-
-          {isRolling ? (
-            <Box className='h-[300px]'>
-              <></>
-            </Box>
-          ) : (
-            <>
-              {/* Middle layer */}
-              <Box className="mt-[3rem] text-center">
-                <Text className='font-semibold'>Pays 2X</Text>
-                <Text className='text-gray-400 text-[.9rem] font-semibold'>LOSE IF TRIPLE APPEARS</Text>
-              </Box>
-
-              {/* Bet amount and controls */}
-              {!result && (
-                <>
-                  <Box className='mt-[2rem]'>
-                    {checkBalance ? (
-                      <Box className='text-center text-red-500'>
-                        Insufficient funds! Please add more money to continue.
-                      </Box>
-                    ) : (
-                      <></>
-                    )}
-                    <Flex className='h-full px-3 justify-between w-[40%] m-auto border border-black'>
-                      <p className='font-semibold relative top-[2px]'>Bet</p>
-                      <Flex className='gap-1'>
-                        <Image
-                          src={emptyChipIcon}
-                          alt="chip"
-                          width={20}
-                          height={20}
-                          style={{ width: `20px`, height: '20px' }}
-                          className='flex-shrink-0'
-                        />
-                        <p className='font-semibold relative top-[2px]'>{formattedBetAmount}</p>
-                      </Flex>
-                    </Flex>
-                  </Box>
-
-                  {/* Bet Amount Input */}
-                  <Box className='mt-4 flex flex-col items-center px-4 w-[80%] m-auto'>
-                    {/* Slider */}
-                    <Flex className='relative w-full justify-between gap-4 text-white text-sm mt-2'>
-                      <span className="font-semibold">{MIN_BET}</span>
-                      <div ref={sliderRef} className='w-full h-1 bg-[#3998b5] rounded-md relative cursor-pointer' onClick={handleSliderClick}>
-                        <div
-                          className='absolute cursor-pointer'
-                          style={{
-                            left: `${chipPosition}%`,
-                            top: `-${(CHIP_SIZE / 2) - 2}px`,
-                            transform: "translateX(-50%)",
-                            width: `${CHIP_SIZE}px`,
-                            height: `${CHIP_SIZE}px`,
-                            zIndex: 10
-                          }}
-                          onMouseDown={handleMouseDown}
-                          onMouseUp={handleMouseUp}
-                        >
-                          <Image
-                            src={emptyChipIcon}
-                            alt="Chip"
-                            width={CHIP_SIZE}
-                            height={CHIP_SIZE}
-                            draggable="false"
-                            onDragStart={preventDragHandler}
-                            style={{ width: `${CHIP_SIZE}px`, height: `${CHIP_SIZE}px` }}
-                          />
-                        </div>
-                      </div>
-                      <span className='font-semibold'>{convert(maxBet)}</span>
-                    </Flex>
-                  </Box>
-
-                  {/* Chip Carousel */}
-                  <Box className='mt-8 px-2'>
-                    <ChipCarousel onSelect={(value) => handleChipSelection(value)} />
-                    <Flex className='justify-center gap-10 text-gray-400 font-semibold'>
-                      <span>Min: {MIN_BET}</span>
-                      <span>Max: {convert(maxBet)}</span>
-                    </Flex>
-                  </Box>
-                </>
-              )}
-
-              {/* Result display */}
-              {result && (
-                <Box className="mt-4 text-center h-[200px]">
-                  {/* Display whether the dice roll was Even or Odd */}
-                  <Box 
-                    className={`px-3 py-2 w-[50%] font-semibold text-[1.5rem] m-auto mt-8 
-                      ${isEven ? "bg-[#0a9737]" : "bg-[#de9244]"}`}
-                  >
-                    {isEven ? "EVEN" : "ODD"}
-                  </Box>
-
-                  {/* Display the result based on user choice */}
-                  <Text className={`${result.includes("won") ? "text-green-500" : "text-red-500"} mt-3`}>
-                    {result.includes("won") 
-                      ? result 
-                      : userChoice 
-                        ? `${result}. You chose ${userChoice.toUpperCase()}`
-                        : `${result}. No choice was made`}
-                  </Text>
-
-                </Box>
-              )}
-
-            </>
-          )}
-        </Box>
-
-        {/* Even/Odd buttons with result highlighting */}
-        
-        {!result ? (
-          <Flex className='justify-center m-auto mt-2 w-[400px]'>
-            <Box
-              className={`px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#0a9737]`}
-              onClick={() => handleUserChoice("even")}
-            >
-              <span>EVEN</span>
-              <span className='text-[.9rem]'>Pays 2x</span>
-            </Box>
-            <Box
-              className={`px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#de9244]`}
-              onClick={() => handleUserChoice("odd")}
-            >
-              <span>ODD</span>
-              <span className='text-[.9rem]'>Pays 2x</span>
             </Box>
           </Flex>
         ) : (
-          <Flex className='justify-center m-auto mt-2 w-[400px] gap-2'>
-            <Box 
-              className='px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#0a9737]'
-              onClick={handleRebet}
-            >
-              REBET
+          <>
+            <Box className='even-odd-bg w-full rounded-b-[10%] border-[10px] border-t-0 border-[#17a2b8] pb-8'>
+              {/* Header */}
+              <Box className="p-5 text-white">
+                <HStack className="justify-between items-center">
+                  <Image src={LeftarrowIcon} className='cursor-pointer' alt="return" width={20} height={20} onClick={() => router.back()} />
+                  <Text className="font-bold text-[1.3rem]">Even-Odd Game</Text>
+                  <Image src={Burger} className="cursor-pointer" alt="menu" width={30} />
+                </HStack>
+
+                {/* Wallet */}
+                <Flex className="items-center gap-2 mt-6">
+                  <Image src={Wallet} alt="wallet" width={20} height={20} />
+                  <Text className="text-[1rem]">NGN{walletBalance.toLocaleString()}</Text>
+                </Flex>
+                <Text className="mt-2 text-green-500">+ Add Money</Text>
+              </Box>
+
+              {/* Dice */}
+              <Flex className='gap-4 justify-center items-center mt-5'>
+                {dice.map((value, index) => (
+                  <Box
+                    key={index}
+                    className={`w-16 h-16 bg-white border-2 border-black grid grid-cols-3 grid-rows-3 gap-1 p-1 rounded-md ${rolling[index] ? "animate-spin" : ""}`}
+                    style={{
+                      cursor: value === 0 ? "pointer" : "not-allowed",
+                      animation: rolling[index] ? `${spin} 0.5s linear` : "none",
+                    }}
+                  >
+                    {value !== 0 && diceFaces[value as 1 | 2 | 3 | 4 | 5 | 6].map((row: boolean[], rowIndex: number) =>
+                      row.map((dot: boolean, colIndex: number) => (
+                        <Box
+                          key={`${rowIndex}-${colIndex}`}
+                          className={`w-2 h-2 rounded-full ${dot ? "bg-black" : "bg-transparent"}`}
+                          style={{ justifySelf: "center", alignSelf: "center" }}
+                        >
+                          <></>
+                        </Box>
+                      ))
+                    )}
+                  </Box>
+                ))}
+              </Flex>
+
+              {isRolling ? (
+                <Box className='h-[300px]'>
+                  <></>
+                </Box>
+              ) : (
+                <>
+                  {/* Middle layer */}
+                  <Box className="mt-[3rem] text-center">
+                    <Text className='font-semibold'>Pays 2X</Text>
+                    <Text className='text-gray-400 text-[.9rem] font-semibold'>LOSE IF TRIPLE APPEARS</Text>
+                  </Box>
+
+                  {/* Bet amount and controls */}
+                  {!result && (
+                    <>
+                      <Box className='mt-[2rem]'>
+                        {checkBalance ? (
+                          <Box className='text-center text-red-500'>
+                            Insufficient funds! Please add more money to continue.
+                          </Box>
+                        ) : (
+                          <></>
+                        )}
+                        <Flex className={`h-full px-3 justify-between w-[40%] m-auto border border-black ${checkBalance ? 'border-red-500' : ''}`}>
+                          <p className={`font-semibold relative top-[2px] ${checkBalance ? 'text-red-500' : ''}`}>Bet</p>
+                          <Flex className='gap-1'>
+                            <Image
+                              src={emptyChipIcon}
+                              alt="chip"
+                              width={20}
+                              height={20}
+                              style={{ width: `20px`, height: '20px' }}
+                              className='flex-shrink-0'
+                            />
+                            <p className='font-semibold relative top-[2px]'>{formattedBetAmount}</p>
+                          </Flex>
+                        </Flex>
+                      </Box>
+
+                      {/* Bet Amount Input */}
+                      <Box className='mt-4 flex flex-col items-center px-4 w-[80%] m-auto'>
+                        {/* Slider */}
+                        <Flex className='relative w-full justify-between gap-4 text-white text-sm mt-2'>
+                          <span className="font-semibold">{MIN_BET}</span>
+                          <div ref={sliderRef} className='w-full h-1 bg-[#3998b5] rounded-md relative cursor-pointer' onClick={handleSliderClick}>
+                            <div
+                              className='absolute cursor-pointer'
+                              style={{
+                                left: `${chipPosition}%`,
+                                top: `-${(CHIP_SIZE / 2) - 2}px`,
+                                transform: "translateX(-50%)",
+                                width: `${CHIP_SIZE}px`,
+                                height: `${CHIP_SIZE}px`,
+                                zIndex: 10
+                              }}
+                              onMouseDown={handleMouseDown}
+                              onMouseUp={handleMouseUp}
+                            >
+                              <Image
+                                src={emptyChipIcon}
+                                alt="Chip"
+                                width={CHIP_SIZE}
+                                height={CHIP_SIZE}
+                                draggable="false"
+                                onDragStart={preventDragHandler}
+                                style={{ width: `${CHIP_SIZE}px`, height: `${CHIP_SIZE}px` }}
+                              />
+                            </div>
+                          </div>
+                          <span className='font-semibold'>{convert(maxBet)}</span>
+                        </Flex>
+                      </Box>
+
+                      {/* Chip Carousel */}
+                      <Box className='mt-8 px-2'>
+                        <ChipCarousel onSelect={(value) => handleChipSelection(value)} />
+                        <Flex className='justify-center gap-10 text-gray-400 font-semibold'>
+                          <span>Min: {MIN_BET}</span>
+                          <span>Max: {convert(maxBet)}</span>
+                        </Flex>
+                      </Box>
+                    </>
+                  )}
+
+                  {/* Result display */}
+                  {result && (
+                    <Box className="mt-4 text-center h-[200px]">
+                      {/* Display whether the dice roll was Even or Odd */}
+                      <Box 
+                        className={`px-3 py-2 w-[50%] font-semibold text-[1.5rem] m-auto mt-8 
+                          ${isEven ? "bg-[#0a9737]" : "bg-[#de9244]"}`}
+                      >
+                        {isEven ? "EVEN" : "ODD"}
+                      </Box>
+
+                      {/* Display the result based on user choice */}
+                      <Text className={`${result.includes("won") ? "text-green-500" : "text-red-500"} mt-3`}>
+                        {result.includes("won") 
+                          ? result 
+                          : userChoice 
+                            ? `${result}. You chose ${userChoice.toUpperCase()}`
+                            : `${result}. No choice was made`}
+                      </Text>
+
+                    </Box>
+                  )}
+
+                </>
+              )}
             </Box>
-            <Box 
-              className='px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#0a9737]'
-              onClick={handleNewRound}
-            >
-              NEW ROUND
-            </Box>
-          </Flex>
+
+            {/* Even/Odd buttons with result highlighting */}
+            
+            {!result ? (
+              <Flex className='justify-center m-auto mt-2 w-[400px]'>
+                <Box
+                  className={`cursor-pointer px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#0a9737]`}
+                  onClick={() => handleUserChoice("even")}
+                >
+                  <span>EVEN</span>
+                  <span className='text-[.9rem]'>Pays 2x</span>
+                </Box>
+                <Box
+                  className={`cursor-pointer px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#de9244]`}
+                  onClick={() => handleUserChoice("odd")}
+                >
+                  <span>ODD</span>
+                  <span className='text-[.9rem]'>Pays 2x</span>
+                </Box>
+              </Flex>
+            ) : (
+              <Flex className='justify-center m-auto mt-2 w-[400px] gap-2'>
+                <Box 
+                  className='cursor-pointer px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#0a9737]'
+                  onClick={handleRebet}
+                >
+                  REBET
+                </Box>
+                <Box 
+                  className='cursor-pointer px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#0a9737]'
+                  onClick={handleNewRound}
+                >
+                  NEW ROUND
+                </Box>
+              </Flex>
+            )}
+          </>
         )}
-          
         
+      
       </Box>
     </>
   );
