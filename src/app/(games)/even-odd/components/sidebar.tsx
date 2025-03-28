@@ -32,33 +32,42 @@ const SideBar: React.FC<SideBarProps> = ({ isOpen, onClose }) => {
     return (
         <AnimatePresence>
             {isOpen && (
-                <motion.div
-                    ref={sidebarRef}
-                    initial={{ x: '100%' }}
-                    animate={{ x: '0' }}
-                    exit={{ x: '100%' }}
-                    // transition={{ ease: 'easeInOut' }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    className={`
-                        absolute
-                        top-0
-                        right-0
-                        h-full
-                        w-64
-                        bg-white
-                        shadow-lg
-                        z-50
-                        transform
-                        transition-transform
-                        ease-in-out
-                        duration-300, 
-                        overflow-y-auto
-                    `}
-                >
-                    <div className='p-4'>
-                        Sidebar
-                    </div>
-                </motion.div>
+                <>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 0.5 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black z-40"
+                        onClick={onClose}
+                     />
+                    <motion.div
+                        ref={sidebarRef}
+                        initial={{ x: '100%' }}
+                        animate={{ x: '0' }}
+                        exit={{ x: '100%' }}
+                        // transition={{ ease: 'easeInOut' }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                        className={`
+                            absolute
+                            top-0
+                            right-0
+                            h-full
+                            w-64
+                            bg-white
+                            shadow-lg
+                            z-50
+                            transform
+                            transition-transform
+                            ease-in-out
+                            duration-300, 
+                            overflow-y-auto
+                        `}
+                    >
+                        <div className='p-4 text-black'>
+                            Sidebar
+                        </div>
+                    </motion.div>
+                </>
             )}
             
         </AnimatePresence>

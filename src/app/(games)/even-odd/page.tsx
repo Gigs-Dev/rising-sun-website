@@ -95,16 +95,18 @@ const EvenOdd = () => {
     }
 
     setUserChoice(choice);
+    // console.log('user_choice:', userChoice);
+    // console.log('user_choice:', choice);
     setIsRolling(true);
     setDice([0, 0, 0]);
     setRolling([true, false, false]);
 
-    rollDiceSequentially(0, []);
+    rollDiceSequentially(0, [], choice);
   };
 
-  const rollDiceSequentially = (index: number, rolledValues: number[]) => {
+  const rollDiceSequentially = (index: number, rolledValues: number[], choice: "even" | "odd") => {
     if (index >= 3) {
-      checkResult(rolledValues);
+      checkResult(rolledValues, choice);
       return;
     }
 
@@ -125,14 +127,18 @@ const EvenOdd = () => {
         return updatedRolling;
       });
 
-      rollDiceSequentially(index + 1, newDice);
+      rollDiceSequentially(index + 1, newDice, choice);
     }, 800);
   };
 
   // Check Result
-  const checkResult = (finalDice: number[]) => {
+  const checkResult = (finalDice: number[], choice: "even" | "odd") => {
+    // console.log('Final Dice:', finalDice);
     const total = finalDice.reduce((sum, num) => sum + num, 0);
+    // console.log('Total', total);
     const isEven = total % 2 === 0;
+    // console.log('Is Even:', isEven);
+    // console.log('User Choice:', userChoice);
     setIsEven(isEven);
     const allSame = finalDice.every((num) => num === finalDice[0]);
 
@@ -140,7 +146,7 @@ const EvenOdd = () => {
     if (allSame) {
       setResult("All dice are the same. You lost!");
       newBalance -= betAmount;
-    } else if ((isEven && userChoice === "even") || (!isEven && userChoice === "odd")) {
+    } else if ((isEven && choice === "even") || (!isEven && choice === "odd")) {
       // setIsChoice(userChoice);
       setResult(`You won! 🎉 Your winnings: ${betAmount * 2}`);
       const tempBalance = newBalance - betAmount;
@@ -276,7 +282,7 @@ const EvenOdd = () => {
 
   return (
     <>
-      <Box className={`relative m-auto mt-5 w-[400px] h-[700px] p-2 shadow-xl ${loading ? 'h-[600px] bg-black bg-opacity-50 backdrop-blur-md rounded-md px-[2rem]' : ''}`}>
+      <Box className={`relative m-auto mt-5 w-[400px] h-[700px]  shadow-xl ${loading ? 'h-[600px] bg-black bg-opacity-50 backdrop-blur-md rounded-md px-[2rem]' : ''}`}>
         {loading ? (
           <Flex className='justify-center flex-col h-full'>
             <Text className='text-lg font-bold'>Loading...</Text>
@@ -449,7 +455,7 @@ const EvenOdd = () => {
             {/* Even/Odd buttons with result highlighting */}
             
             {!result ? (
-              <Flex className='justify-center m-auto mt-2 w-[400px]'>
+              <Flex className='justify-center m-auto mt-2 w-[350px]'>
                 <Box
                   className={`cursor-pointer px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#0a9737]`}
                   onClick={() => handleUserChoice("even")}
