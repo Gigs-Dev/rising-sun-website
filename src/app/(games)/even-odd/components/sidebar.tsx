@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// import { Box, HStack, Flex } from "@/ui/primitives/ui-layout";
-// import { Text } from '@/ui/primitives/typography';
+import { Box, Flex } from "@/ui/primitives/ui-layout";
+import Image from 'next/image';
+import { Text } from '@/ui/primitives/typography';
+import emptyChipIcon from "@/svgs/empty_casino_chips.svg";
 
 interface SideBarProps {
     isOpen: boolean;
@@ -53,7 +55,6 @@ const SideBar: React.FC<SideBarProps> = ({ isOpen, onClose }) => {
                             right-0
                             h-full
                             w-64
-                            bg-white
                             shadow-lg
                             z-50
                             transform
@@ -61,11 +62,16 @@ const SideBar: React.FC<SideBarProps> = ({ isOpen, onClose }) => {
                             ease-in-out
                             duration-300, 
                             overflow-y-auto
+                            bg-[#006E90]
                         `}
                     >
-                        <div className='p-4 text-black'>
-                            Sidebar
-                        </div>
+                        <Box className='p-6 text-black bg-[#06566E]'>
+                            <Box className='text-white font-semibold text-[1.3rem]'>Even-Odd Game</Box>
+                            <Flex className='mt-4 gap-2'>
+                                <Image src={emptyChipIcon} alt="ppix" className='rounded-full w-[2rem] h-[2rem]' />
+                                <Text className='relative top-[4px] text-white font-semibold text-[1.1rem]'>816xxxxx58</Text>
+                            </Flex>
+                        </Box>
                     </motion.div>
                 </>
             )}

@@ -89,7 +89,7 @@ const ChipCarousel: React.FC<ChipCarouselProps> =  ({ onSelect }) => {
                     />
 
                     {/* Chip Value Text */}
-                    <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black text-[.6rem]'>{convert(chip.value)}</span>
+                    <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black text-[.6rem] tracking-wide'>{convert(chip.value)}</span>
                 </Box>
             ))}
         </div>

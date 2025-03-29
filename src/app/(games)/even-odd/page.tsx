@@ -365,17 +365,17 @@ const EvenOdd = () => {
                           <></>
                         )}
                         <Flex className={`h-full px-3 justify-between w-[40%] m-auto border border-black ${checkBalance ? 'border-red-500' : ''}`}>
-                          <p className={`font-semibold relative top-[2px] ${checkBalance ? 'text-red-500' : ''}`}>Bet</p>
+                          <p className={`font-semibold relative top-[4px] ${checkBalance ? 'text-red-500' : ''}`}>Bet</p>
                           <Flex className='gap-1'>
                             <Image
                               src={emptyChipIcon}
                               alt="chip"
-                              width={20}
-                              height={20}
-                              style={{ width: `20px`, height: '20px' }}
+                              width={15}
+                              height={15}
+                              style={{ width: `15px`, height: '15px' }}
                               className='flex-shrink-0'
                             />
-                            <p className='font-semibold relative top-[2px]'>{formattedBetAmount}</p>
+                            <p className='font-semibold relative top-[4px]'>{formattedBetAmount}</p>
                           </Flex>
                         </Flex>
                       </Box>
