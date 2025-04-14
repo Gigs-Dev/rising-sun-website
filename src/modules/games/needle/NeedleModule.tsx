@@ -44,6 +44,9 @@ const Needle:FC<NType> = ({setDown, setUp}) => {
     if (!isClient) return null;
 
 
+    // console.log(setUp, setDown);
+
+
     const startRotation = () => {
       setValue((Math.random() * 100))
     }

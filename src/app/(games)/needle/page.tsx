@@ -13,6 +13,7 @@ const NeedlePage = () => {
 
   const [up, setUp] = useState(false);
   const [down, setDown] = useState(false);
+  const [value, setValue] = useState(0);
 
 
   const handleChooseDown = () => {

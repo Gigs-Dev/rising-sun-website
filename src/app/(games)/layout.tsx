@@ -9,11 +9,9 @@ export const metadata = {
 
 const GamesLayout = ({children}: {children: React.ReactNode}) => {
   return (
-    <div className='flex flex-col min-h-screen gap-0 w-fit'>
+    <div className='flex flex-col min-h-screen gap-0 w-full'>
         <Navbar/>
-        {/* <div className="flex justify-center items-center h-full w-full md:w-1/3 xl:w-1/2 m-auto border-x-2 bg-[#0a9737]"> */}
-            <div className="">{children}</div>
-        {/* </div> */}
+        {children}
         <Footer/>
     </div>
   )
