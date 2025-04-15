@@ -1,117 +1,95 @@
 'use client';
 
+
 import React, { useEffect, useState, Dispatch, SetStateAction, FC } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { motion } from 'framer-motion';
 
-
 interface NType {
-    setUp: Dispatch<SetStateAction<boolean>>;
-    setDown: Dispatch<SetStateAction<boolean>>;
+  setUp: Dispatch<SetStateAction<boolean>>;
+  setDown: Dispatch<SetStateAction<boolean>>;
+  shouldRotate?: boolean;
 }
 
-
-// const RADIAN = Math.PI / 360;
 const data = [
   { name: 'B', value: 80, color: '#00ff00' },
   { name: 'C', value: 80, color: '#0000ff' },
 ];
 
+const cx = 150;
+const cy = 175; 
+const iR = 75;
+const oR = 100;
 
-const cx = 150; // Center X
-const cy = 200; // Center Y
-const iR = 75; // Inner Radius
-const oR = 100; // Outer Radius
+const Needle: FC<NType> = ({ shouldRotate }) => {
+  const [angle, setAngle] = useState(0);
 
+  useEffect(() => {
+    const total = data.reduce((sum, v) => sum + v.value, 0);
+    const slice = data[0];
+    const midValue = slice.value / 2;
+    const angleToFirst = 360 * (1 - midValue / total);
+    setAngle(angleToFirst);
+  }, []);
 
-
-
-
-const Needle:FC<NType> = ({setDown, setUp}) => {
-
-
-    const [value, setValue] = useState(0); 
-    const [angle, setAngle] = useState(0); 
-    const [isClient, setIsClient] = useState(false);
-
-    useEffect(() => {
-        const total = data.reduce((sum, v) => sum + v.value, 0);
-        const newAngle = 360 * (1 - value / total);
-        setAngle(newAngle);
-        setIsClient(true); 
-    }, [value]);
-
-    if (!isClient) return null;
-
-
-    // console.log(setUp, setDown);
-
-
-    const startRotation = () => {
-      setValue((Math.random() * 100))
-    }
-
-    // const total = data.reduce((sum, v) => sum + v.value, 0);
-    // const angle = 360.0 * (1 - value / total);
-    // const length = (iR + 2 * oR) / 3;
-    // const sin = Math.sin(-RADIAN * angle);
-    // const cos = Math.cos(-RADIAN * angle);
-    // const r = 5;
-    // const x0 = cx;
-    // const y0 = cy;
-    // const xba = x0 + r * sin;
-    // const yba = y0 - r * cos;
-    // const xbb = x0 - r * sin;
-    // const ybb = y0 + r * cos;
-    // const xp = x0 + length * cos;
-    // const yp = y0 + length * sin;
 
 
   return (
-    <div className="w-[400px] h-[350px] ml-[40px]">
-         <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-            <Pie
-                dataKey="value"
-                data={data}
-                cx={cx}
-                cy={cy}
-                startAngle={360}
-                endAngle={0}
-                paddingAngle={1}
-                innerRadius={iR}
-                outerRadius={oR}
-                fill="#8884d8"
-                stroke="none"
+    <div className="relative w-[290px] h-[350px] ml-[40px]">
+      {/* Pie chart below */}
+      <ResponsiveContainer width="100%" height="100%" className='relative'>
+        <PieChart>
+          <Pie
+            dataKey="value"
+            data={data}
+            cx={cx}
+            cy={cy}
+            startAngle={360}
+            endAngle={0}
+            paddingAngle={1}
+            innerRadius={iR}
+            outerRadius={oR}
+            stroke="none"
+          >
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={entry.color} />
+            ))}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+
+      {/* Needle overlay */}
+      <svg
+        className="absolute top-[60px] left-0 bottom-0 flex m-auto pointer-events-none"
+        width={400}
+        height={350}
+      >
+
+          <motion.g
+              animate={shouldRotate ? { rotate: 360 } : { rotate: angle }}
+              initial={{ rotate: angle }}
+              transition={{
+                repeat: 1,
+                duration: 1,
+                ease: 'linear',
+              }}
+              style={{ transformOrigin: `${cx}px ${cy}px` }}
             >
-                {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-            </Pie>
-
-            <svg width={400} height={500}>
-              <motion.g
-                animate={{ rotate: angle }}
-                transition={{ duration: 1.5, ease: 'easeInOut' }}
-                style={{ transformOrigin: `${cx}px ${cy}px` }} // Rotation Center
-              >
-                <circle cx={cx} cy={cy} r={5} fill="#fff" stroke="none" />
-                <path
-                  d={`M${cx},${cy - 10} L${cx - 5},${cy + 5} L${cx + 5},${cy + 5} Z`}
-                  fill="#fff"
-                />
-              </motion.g>
-            </svg>
-
-            {/* <svg width={400} height={500}>
-                <g>
-                <circle cx={x0} cy={y0} r={r} fill="#fff" stroke="none" />
-                <path d={`M${xba},${yba} L${xbb},${ybb} L${xp},${yp} Z`} fill="#fff" />
-                </g>
-            </svg> */}
-            </PieChart>
-
-         </ResponsiveContainer>
+          <circle cx={cx} cy={cy} r={5} fill="#fff" stroke="none" />
+          <line
+            x1={cx}
+            y1={cy}
+            x2={cx}
+            y2={cy - 50}
+            stroke="#fff"
+            strokeWidth={2}
+          />
+          <path
+            d={`M${cx},${cy - 60} L${cx - 6},${cy - 50} L${cx + 6},${cy - 50} Z`}
+            fill="#fff"
+          />
+        </motion.g>
+      </svg>
     </div>
   );
 };
