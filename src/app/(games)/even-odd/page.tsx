@@ -7,13 +7,14 @@ import Image from "next/image";
 import { keyframes } from '@emotion/react';
 import ChipCarousel from './components/chipCarousel';
 import { useRouter } from 'next/navigation';
-import SideBar from './components/sidebar';
+import SideBar from './components/Sidebar';
 
 // Icons
 import LeftarrowIcon from '@/svgs/leftarrow-2.svg';
 import Burger from "@/svgs/burger-2.svg";
 import Wallet from '@/svgs/wallet.svg';
 import emptyChipIcon from "@/svgs/empty_casino_chips.svg"; // Import the chip 
+import CurvedText from './components/CurvedText';
 
 const diceFaces: Record<1 | 2 | 3 | 4 | 5 | 6, boolean[][]> = {
   1: [[false, false, false], [false, true, false], [false, false, false]],
@@ -282,11 +283,12 @@ const EvenOdd = () => {
 
   return (
     <>
-      <Box className={`relative m-auto mt-5 w-[400px] h-[700px]  shadow-xl ${loading ? 'h-[600px] bg-black bg-opacity-50 backdrop-blur-md rounded-md px-[2rem]' : ''}`}>
+      {/* <Box className={`relative m-auto mt-5 w-[400px] h-[700px]  shadow-xl ${loading ? 'h-[600px] bg-black bg-opacity-50 backdrop-blur-md rounded-md px-[2rem]' : ''}`}> */}
+      <Box className={`relative m-auto mt-5 w-full max-w-[400px] min-h-[700px] shadow-xl px-2 sm:px-0 ${loading ? 'h-[600px] bg-black bg-opacity-50 backdrop-blur-md rounded-md px-[2rem]' : ''}`}>
         {loading ? (
-          <Flex className='justify-center flex-col h-full'>
+          <Flex className='justify-center flex-col h-[70%] items-center'>
             <Text className='text-lg font-bold'>Loading...</Text>
-            <Box className='w-full bg-gray-300 h-2 rounded-full mt-2'>
+            <Box className='bg-gray-300 h-2 rounded-full mt-2 w-[80%]'>
               <Box className='bg-blue-500 h-2 rounded-full transition-all duration-200' style={{ width: `${progress}%` }}>
                 <></>
               </Box>
@@ -316,11 +318,13 @@ const EvenOdd = () => {
               </Box>
 
               {/* Dice */}
-              <Flex className='gap-4 justify-center items-center mt-5'>
+              {/* <Flex className='gap-4 justify-center items-center mt-5'> */}
+              <Flex className='gap-2 sm:gap-4 justify-center items-center mt-5'>
                 {dice.map((value, index) => (
                   <Box
                     key={index}
-                    className={`w-16 h-16 bg-white border-2 border-black grid grid-cols-3 grid-rows-3 gap-1 p-1 rounded-md ${rolling[index] ? "animate-spin" : ""}`}
+                    // className={`w-16 h-16 bg-white border-2 border-black grid grid-cols-3 grid-rows-3 gap-1 p-1 rounded-md ${rolling[index] ? "animate-spin" : ""}`}
+                    className={`w-12 h-12 sm:w-16 sm:h-16 bg-white border-2 border-black grid grid-cols-3 grid-rows-3 gap-1 p-1 rounded-md ${rolling[index] ? "animate-spin" : ""}`}
                     style={{
                       cursor: value === 0 ? "pointer" : "not-allowed",
                       animation: rolling[index] ? `${spin} 0.5s linear` : "none",
@@ -348,9 +352,11 @@ const EvenOdd = () => {
               ) : (
                 <>
                   {/* Middle layer */}
-                  <Box className="mt-[3rem] text-center">
-                    <Text className='font-semibold'>Pays 2X</Text>
-                    <Text className='text-gray-400 text-[.9rem] font-semibold'>LOSE IF TRIPLE APPEARS</Text>
+                  <Box className="mt-[1.7rem] flex flex-col text-center">
+                    <CurvedText text="PAYS 2x" fontSize={18} color="text-gray-400" curveHeight={6} totalWidth={80} yNumber={4} />
+                    <CurvedText text="LOSE IF TRIPLE APPEARS" fontSize={14} color="text-gray-400" curveHeight={4} totalWidth={170} yNumber={1} />
+                    {/* <Text className='font-semibold'>Pays 2X</Text> */}
+                    {/* <Text className='text-gray-400 text-[.9rem] font-semibold'>LOSE IF TRIPLE APPEARS</Text> */}
                   </Box>
 
                   {/* Bet amount and controls */}
@@ -365,6 +371,7 @@ const EvenOdd = () => {
                           <></>
                         )}
                         <Flex className={`h-full px-3 justify-between w-[40%] m-auto border border-black ${checkBalance ? 'border-red-500' : ''}`}>
+                        {/* <Flex className={`h-full px-2 sm:px-3 justify-between w-full sm:w-[40%] m-auto border border-black ${checkBalance ? 'border-red-500' : ''}`}> */}
                           <p className={`font-semibold relative top-[4px] ${checkBalance ? 'text-red-500' : ''}`}>Bet</p>
                           <Flex className='gap-1'>
                             <Image
@@ -381,7 +388,8 @@ const EvenOdd = () => {
                       </Box>
 
                       {/* Bet Amount Input */}
-                      <Box className='mt-4 flex flex-col items-center px-4 w-[80%] m-auto'>
+                      {/* <Box className='mt-4 flex flex-col items-center px-4 w-[80%] m-auto'> */}
+                      <Box className='mt-4 flex flex-col items-center px-2 sm:px-4 w-[95%] sm:w-[80%] m-auto'>
                         {/* Slider */}
                         <Flex className='relative w-full justify-between gap-4 text-white text-sm mt-2'>
                           <span className="font-semibold">{MIN_BET}</span>
@@ -454,7 +462,7 @@ const EvenOdd = () => {
 
             {/* Even/Odd buttons with result highlighting */}
             
-            {!result ? (
+            {/* {!result ? (
               <Flex className='justify-center m-auto mt-2 w-[350px]'>
                 <Box
                   className={`cursor-pointer px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#0a9737]`}
@@ -481,6 +489,39 @@ const EvenOdd = () => {
                 </Box>
                 <Box 
                   className='cursor-pointer px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#0a9737]'
+                  onClick={handleNewRound}
+                >
+                  NEW ROUND
+                </Box>
+              </Flex>
+            )} */}
+            {!result ? (
+              <Flex className='justify-center m-auto mt-2 w-[95%] sm:w-[350px]'>
+                <Box
+                  className={`cursor-pointer px-2 sm:px-3 py-2 w-[50%] font-semibold text-[1.2rem] sm:text-[1.5rem] flex flex-col items-center bg-[#0a9737]`}
+                  onClick={() => handleUserChoice("even")}
+                >
+                  <span>EVEN</span>
+                  <span className='text-[.8rem] sm:text-[.9rem]'>Pays 2x</span>
+                </Box>
+                <Box
+                  className={`cursor-pointer px-2 sm:px-3 py-2 w-[50%] font-semibold text-[1.2rem] sm:text-[1.5rem] flex flex-col items-center bg-[#de9244]`}
+                  onClick={() => handleUserChoice("odd")}
+                >
+                  <span>ODD</span>
+                  <span className='text-[.8rem] sm:text-[.9rem]'>Pays 2x</span>
+                </Box>
+              </Flex>
+            ) : (
+              <Flex className='justify-center m-auto mt-2 w-[95%] sm:w-[400px] gap-2'>
+                <Box 
+                  className='cursor-pointer px-2 sm:px-3 py-2 w-[50%] font-semibold text-[1.2rem] sm:text-[1.5rem] flex flex-col items-center bg-[#0a9737]'
+                  onClick={handleRebet}
+                >
+                  REBET
+                </Box>
+                <Box 
+                  className='cursor-pointer px-2 sm:px-3 py-2 w-[50%] font-semibold text-[1.2rem] sm:text-[1.5rem] flex flex-col items-center bg-[#0a9737]'
                   onClick={handleNewRound}
                 >
                   NEW ROUND
