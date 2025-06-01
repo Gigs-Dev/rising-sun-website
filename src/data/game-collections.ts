@@ -1,11 +1,11 @@
 export const GameCollectionsList = [
   {
-    name: "Rush Solo",
-    link: "/rush",
+    name: "Spin and Win",
+    link: "/spin",
   },
   {
-    name: "Sporty Hero",
-    link: "/sportyhero",
+    name: "Needle Pointer",
+    link: "/needle",
   },
   {
     name: "Aviator",
@@ -16,8 +16,8 @@ export const GameCollectionsList = [
     link: "/guess",
   },
   {
-    name: "Dice",
-    link: "/dice",
+    name: "EvenOdd",
+    link: "/even-odd",
   },
   {
     name: "Ludo",
