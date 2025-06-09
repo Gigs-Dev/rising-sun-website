@@ -7,7 +7,7 @@ import Image from "next/image";
 import { keyframes } from '@emotion/react';
 import ChipCarousel from './components/chipCarousel';
 import { useRouter } from 'next/navigation';
-import SideBar from './components/Sidebar';
+import SideBar from './components/sidebar';
 
 // Icons
 import LeftarrowIcon from '@/svgs/leftarrow-2.svg';
@@ -235,7 +235,7 @@ const EvenOdd = () => {
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleGlobalMouseUp);
-
+    
     window.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("touchend", handleGlobalMouseUp);
 
