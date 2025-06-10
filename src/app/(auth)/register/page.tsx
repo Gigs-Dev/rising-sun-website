@@ -5,7 +5,7 @@ import { Text } from "@/ui/primitives/typography";
 import { Box } from "@/ui/primitives/ui-layout";
 import Image from "next/image";
 import LogoIcon from "@/svgs/logo.svg";
-import Link from "next/link";
+// import Link from "next/link";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 const Page = () => {
@@ -86,13 +86,13 @@ const Page = () => {
           </Box>
 
           {/* Forgot Password Link */}
-          <Box className="flex justify-end">
+          {/* <Box className="flex justify-end">
             <Link href="/forgot-password">
               <Text className="text-[.95rem] font-light text-[#ffffff] hover:text-[#0b2545]">
                 Forgot Password?
               </Text>
             </Link>
-          </Box>
+          </Box> */}
 
           {/* Submit Button */}
           <button

@@ -1,15 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Text } from "@/ui/primitives/typography";
 import { Box } from "@/ui/primitives/ui-layout";
 import Image from "next/image";
 import LogoIcon from "@/svgs/logo.svg";
 import Link from "next/link";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const router = useRouter()
+  const [email, setEmail] = useState<string>('');
+
+  
+  const handleLogin = () => {
+    router.replace('/verify-otp')
+    console.log(email);
+  }
 
   return (
     <Box
@@ -56,12 +64,13 @@ const Page = () => {
               autoComplete="email"
               required
               placeholder="Enter your email"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
               className="w-full pl-10 pr-4 pt-4 pb-3 bg-transparent border-[.2px] border-[#adb5bd] rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-light text-[.9rem]"
             />
           </Box>
 
           {/* Password Input */}
-          <Box className="relative">
+          {/* <Box className="relative">
             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               id="password"
@@ -83,13 +92,16 @@ const Page = () => {
                 <Eye className="w-5 h-5" />
               )}
             </button>
-          </Box>
+          </Box> */}
 
           {/* Forgot Password Link */}
-          <Box className="flex justify-end">
-            <Link href="/forgot-password">
-              <Text className="text-[.95rem] font-light text-[#ffffff] hover:text-[#0b2545]">
-                Forgot Password?
+          <Box className="flex gap-2 items-center justify-end">
+             <Text className="text-[.95rem] font-light text-[#ffffff]">
+                Do not have an account?
+              </Text>
+            <Link href="/register">
+              <Text className="text-[.95rem] font-light text-[#2d2c76] md:text-[#0b2545]">
+                Create account
               </Text>
             </Link>
           </Box>
@@ -97,19 +109,11 @@ const Page = () => {
           {/* Submit Button */}
           <button
             type="submit"
+            onClick={handleLogin}
             className="w-full py-2 px-4 bg-[#9d4edd] text-[#f1f5f8] rounded-[10px] hover:bg-[#9d4edd] focus:outline-none focus:ring-2 focus:ring-[#9d4edd] font-regular trailing-[1rem]"
           >
             <Text className="pt-1">Continue</Text>
           </button>
-
-          <Link href='/register'>
-            <button
-              type="button"
-              className="w-full py-2 px-4 bg-[#9d4edd] text-[#f1f5f8] rounded-[10px] hover:bg-[#9d4edd] focus:outline-none focus:ring-2 focus:ring-[#9d4edd] font-regular trailing-[1rem] mt-4"
-            >
-              <Text className="pt-1">Create an account</Text>
-            </button>
-          </Link>
         </form>
         
       </Box>
