@@ -101,17 +101,7 @@ const Page = () => {
           >
             <Text className="pt-1">Continue</Text>
           </button>
-
-          <Link href='/register'>
-            <button
-              type="button"
-              className="w-full py-2 px-4 bg-[#9d4edd] text-[#f1f5f8] rounded-[10px] hover:bg-[#9d4edd] focus:outline-none focus:ring-2 focus:ring-[#9d4edd] font-regular trailing-[1rem] mt-4"
-            >
-              <Text className="pt-1">Create an account</Text>
-            </button>
-          </Link>
         </form>
-        
       </Box>
     </Box>
   );

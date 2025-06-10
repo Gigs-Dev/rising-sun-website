@@ -1,5 +1,6 @@
 import Footer from '@/ui/components/Footer';
-import Navbar from '@/ui/components/games/Navbar';
+import Header from '@/ui/components/Header';
+// import { useRouter } from 'next/navigation';
 import React from 'react';
 
 export const metadata = {
@@ -8,10 +9,16 @@ export const metadata = {
   };
 
 const GamesLayout = ({children}: {children: React.ReactNode}) => {
+
+  // const router = useRouter();
+
+
   return (
     <div className='flex flex-col min-h-screen gap-0 w-full'>
-        <Navbar/>
-        {children}
+        <Header/>
+        <div className="mt-[100px]">
+          {children}
+        </div>
         <Footer/>
     </div>
   )
