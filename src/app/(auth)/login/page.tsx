@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState, FormEvent } from "react";
 import { Text } from "@/ui/primitives/typography";
 import { Box } from "@/ui/primitives/ui-layout";
 import Image from "next/image";
@@ -8,15 +8,31 @@ import LogoIcon from "@/svgs/logo.svg";
 import Link from "next/link";
 import { Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import SERVER from "@/util/server";
+
 
 const Page = () => {
   const router = useRouter()
   const [email, setEmail] = useState<string>('');
 
+  const mutation = useMutation({
+    mutationFn: async (email: string) => {
+      return SERVER.post(`auth/signinotp`, { email })
+    },
+    onSuccess: (data) => {
+      console.log(data)
+    },
+    onError: (error) => {
+      console.error(error)
+    }
+  })
+
   
-  const handleLogin = () => {
-    router.replace('/verify-otp')
-    console.log(email);
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault()
+    // router.replace('/verify-otp')
+    mutation.mutateAsync(email)
   }
 
   return (

@@ -1,7 +1,8 @@
-const URL = ''
+
+export const URL = 'http://localhost:8800/api/'
 
 
-export const getuUserBal = () => {
-
+export const useGetuUserBal = () => {
+    
 }
 
