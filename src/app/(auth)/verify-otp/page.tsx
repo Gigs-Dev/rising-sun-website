@@ -1,8 +1,11 @@
+'use client';
+
 import React from 'react';
 import { Text } from "@/ui/primitives/typography";
 import { Box } from "@/ui/primitives/ui-layout";
 import Image from "next/image";
 import LogoIcon from "@/svgs/logo.svg";
+import OtpInput from '@/modules/inputs/OtpModule';
 
 const VerifyOtp = () => {
   return (
@@ -31,14 +34,21 @@ const VerifyOtp = () => {
   
         {/* Heading */}
         <Text className="text-center font-medium text-[1.2rem] md:text-[1.5rem] text-white">
-          Sign in to your account
+        Verfy your Email
         </Text>
         <Text className="text-center font-light text-[.9rem] md:text-[.9rem] text-gray-300 mb-8">
-          Enter your email address below to proceed
+          Enter the 4-digits pin sent to your mail
         </Text>
 
-         <Box className="w-full max-w-md px-4">
-          <p></p>
+         <Box className="w-full max-w-md px-4 flex flex-col gap-4">
+          <OtpInput onChange={() => {}} className='text-[#292994]'/>
+
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-[#9d4edd] text-[#f1f5f8] rounded-[10px] hover:bg-[#9d4edd] focus:outline-none focus:ring-2 focus:ring-[#9d4edd] font-regular trailing-[1rem]"
+          >
+            <Text className="pt-1">Verify</Text>
+          </button>
          </Box>
     </Box>
   )

@@ -5,11 +5,11 @@ import { Text } from "@/ui/primitives/typography";
 import { Box } from "@/ui/primitives/ui-layout";
 import Image from "next/image";
 import LogoIcon from "@/svgs/logo.svg";
-// import Link from "next/link";
+import Link from "next/link";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 const Page = () => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+
 
   return (
     <Box
@@ -37,7 +37,7 @@ const Page = () => {
 
       {/* Heading */}
       <Text className="text-center font-medium text-[1.2rem] md:text-[1.5rem] text-white">
-        Sign in to your account
+        Sign up to create account
       </Text>
       <Text className="text-center font-light text-[.9rem] md:text-[.9rem] text-gray-300 mb-8">
         Enter your email address below to proceed
@@ -60,39 +60,30 @@ const Page = () => {
             />
           </Box>
 
-          {/* Password Input */}
           <Box className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
-              id="password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              autoComplete="current-password"
-              required
-              placeholder="Enter your password"
-              className="w-full pl-10 pr-10 pt-4 pb-3 bg-transparent border-[.2px] border-[#adb5bd] rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-light text-[.9rem]"
+              id="code"
+              name="code"
+              type="text"
+              autoComplete="off"
+              // required
+              placeholder="Referal Code (If any)"
+              className="w-full pl-10 pr-4 pt-4 pb-3 bg-transparent border-[.2px] border-[#adb5bd] rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-light text-[.9rem]"
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300 focus:outline-none"
-            >
-              {showPassword ? (
-                <EyeOff className="w-5 h-5" />
-              ) : (
-                <Eye className="w-5 h-5" />
-              )}
-            </button>
           </Box>
 
-          {/* Forgot Password Link */}
-          {/* <Box className="flex justify-end">
-            <Link href="/forgot-password">
-              <Text className="text-[.95rem] font-light text-[#ffffff] hover:text-[#0b2545]">
-                Forgot Password?
+          <Box className="flex gap-2 items-center justify-end">
+             <Text className="text-[.95rem] font-light text-[#ffffff]">
+                Already have an account?
+              </Text>
+            <Link href="/login">
+              <Text className="text-[.95rem] font-light text-[#2d2c76] md:text-[#d8dfe8]">
+                Login
               </Text>
             </Link>
-          </Box> */}
+          </Box>
+
 
           {/* Submit Button */}
           <button
