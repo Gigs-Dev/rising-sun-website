@@ -14,20 +14,49 @@ import CloseIcon from "@/svgs/close.svg";
 import { TopBarData } from "@/data/top-bar-list";
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import useUserStore from "@/pages/home/state/use-user-state";
-import { config } from "@/util/FlutterWave";
+import { useRouter } from "next/navigation";
+
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  // get user state (manage usr login state)
-  const { token } = useUserStore();
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const router = useRouter()
+
+  
+  const config = {
+    public_key: 'FLWPUBK_TEST-8269664599bbc1826be700ae429948df-X',
+    tx_ref: Date.now().toString(),
+      amount: 100,
+      currency: 'NGN',
+      payment_options: 'card,mobilemoney,ussd',
+      customer: {
+        email: 'user@gmail.com',
+        phone_number: '070********',
+        name: 'john doe',
+      },
+      customizations: {
+        title: 'my Payment Title',
+        description: 'Payment for items in cart',
+        logo: 'https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg',
+      },
+    };
+
+  const handlePayment = useFlutterwave(config);
+
+  const { token, logout } = useUserStore();
 
   const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-                                // @ts-ignore
-  const handlePayment = useFlutterwave(config)
+
+  const handleLogout = () => {
+    logout();
+    router.replace('/login')
+  }
+
+  console.log(token);
+
 
   return (
     <Flex className="fixed top-[1px] left-0 w-full md:justify-around justify-between px-4 py-5 bg-transparent z-50">
@@ -75,8 +104,8 @@ const Header = () => {
             onClose: () => {},
           });
         }}
-            className={`text-[.9rem] cursor-pointer pt-1 ${
-                isMenuOpen ? "py-[20px] text-[#000000]" : "py-[0px]"
+            className={`text-[.9rem] cursor-pointer pt-1 bg-[green]  p-3 rounded-md ${
+                isMenuOpen ? "py-[5px] text-center text-[#fff]" : "py-[0px]"
               } font-regular`}>
               Fund Account
           </span>
@@ -113,7 +142,7 @@ const Header = () => {
               />
             </HStack>
           ) : (
-            <Text>My Profile</Text>
+            <Text onClick={handleLogout} className="cursor-pointer">Log out</Text>
           )}
         </Flex>
       </Flex>
