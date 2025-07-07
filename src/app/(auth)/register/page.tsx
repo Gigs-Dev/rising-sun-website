@@ -1,14 +1,57 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Text } from "@/ui/primitives/typography";
 import { Box } from "@/ui/primitives/ui-layout";
 import Image from "next/image";
 import LogoIcon from "@/svgs/logo.svg";
 import Link from "next/link";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import SERVER from "@/util/server";
+import { useRouter } from "next/router";
+
+
+
+type UserPayload = {
+  email: string;
+  code: string;
+};
 
 const Page = () => {
+
+
+  const [user, setUser] = useState<UserPayload>({
+    email: '',
+    code: ''
+  })
+
+  const router = useRouter()
+
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setUser((user) => ({...user, [name]: value}))
+  }
+
+
+  const mutation = useMutation({
+    mutationFn: (user: UserPayload) => SERVER.post('auth/signupotp', user),
+    onSuccess: (data) => {
+      router.push('/verify-otp');
+      console.log(data);
+    },
+    onError: (error) => console.error(error)
+  })
+
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const {email, code} = user;
+    mutation.mutate({email, code})
+  }
 
 
   return (
@@ -45,7 +88,7 @@ const Page = () => {
 
       {/* Form */}
       <Box className="w-full max-w-md px-4">
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           {/* Email Input */}
           <Box className="relative">
             <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -55,6 +98,7 @@ const Page = () => {
               type="email"
               autoComplete="email"
               required
+              onChange={handleChange}
               placeholder="Enter your email"
               className="w-full pl-10 pr-4 pt-4 pb-3 bg-transparent border-[.2px] border-[#adb5bd] rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-light text-[.9rem]"
             />
@@ -67,7 +111,7 @@ const Page = () => {
               name="code"
               type="text"
               autoComplete="off"
-              // required
+              onChange={handleChange}
               placeholder="Referal Code (If any)"
               className="w-full pl-10 pr-4 pt-4 pb-3 bg-transparent border-[.2px] border-[#adb5bd] rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 font-light text-[.9rem]"
             />

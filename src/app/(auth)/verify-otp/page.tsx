@@ -1,13 +1,36 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Text } from "@/ui/primitives/typography";
 import { Box } from "@/ui/primitives/ui-layout";
 import Image from "next/image";
 import LogoIcon from "@/svgs/logo.svg";
 import OtpInput from '@/modules/inputs/OtpModule';
+import SERVER from '@/util/server';
+import { useRouter } from 'next/router';
+
+
 
 const VerifyOtp = () => {
+
+  const router = useRouter()
+  const [otp, setOtp] = useState('');
+
+  const handleOtpChange = (val: string) => {
+    setOtp(val)
+  }
+
+
+  const handleSubmit = async  () => {
+    const res = await SERVER.post('', otp)
+   if(res.data){
+     console.log(otp)
+    router.replace('/')
+   }
+  }
+
+
+
   return (
     <Box
       className="min-h-screen flex flex-col items-center justify-center"
@@ -41,10 +64,11 @@ const VerifyOtp = () => {
         </Text>
 
          <Box className="w-full max-w-md px-4 flex flex-col gap-4">
-          <OtpInput onChange={() => {}} className='text-[#292994]'/>
+          <OtpInput onChange={handleOtpChange} className='text-[#292994]'/>
 
           <button
             type="submit"
+            onClick={handleSubmit}
             className="w-full py-2 px-4 bg-[#9d4edd] text-[#f1f5f8] rounded-[10px] hover:bg-[#9d4edd] focus:outline-none focus:ring-2 focus:ring-[#9d4edd] font-regular trailing-[1rem]"
           >
             <Text className="pt-1">Verify</Text>

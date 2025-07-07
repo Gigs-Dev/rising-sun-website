@@ -12,7 +12,9 @@ import BrIcon from "@/svgs/br.svg";
 import MenuIcon from "@/svgs/menu.svg";
 import CloseIcon from "@/svgs/close.svg";
 import { TopBarData } from "@/data/top-bar-list";
+import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import useUserStore from "@/pages/home/state/use-user-state";
+import { config } from "@/util/FlutterWave";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -23,6 +25,9 @@ const Header = () => {
   const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+                                // @ts-ignore
+  const handlePayment = useFlutterwave(config)
 
   return (
     <Flex className="fixed top-[1px] left-0 w-full md:justify-around justify-between px-4 py-5 bg-transparent z-50">
@@ -59,6 +64,23 @@ const Header = () => {
               : "border-none"
           } lg:flex flex-col lg:flex-row lg:items-center lg:gap-8 absolute lg:static top-full left-0 w-full lg:w-auto backdrop-blur lg:backdrop-blur-none lg:bg-transparent p-4 lg:p-0`}
         >
+
+          <span 
+          onClick={() => {
+          handlePayment({
+            callback: (response) => {
+               console.log(response);
+                closePaymentModal() 
+            },
+            onClose: () => {},
+          });
+        }}
+            className={`text-[.9rem] cursor-pointer pt-1 ${
+                isMenuOpen ? "py-[20px] text-[#000000]" : "py-[0px]"
+              } font-regular`}>
+              Fund Account
+          </span>
+
           {TopBarData.map((item) => (
             <Box
               key={item.name}
