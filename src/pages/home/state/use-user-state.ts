@@ -8,9 +8,12 @@ interface IUser {
 
 interface IUserStore {
   user: IUser | null;
+  email: string | null;
   token: string | null;
   setUser: (user: IUser) => void;
+  setEmail: (email: string) => void;
   setToken: (token: string | null) => void;
+  logout: () => void;
 }
 
 const useUserStore = create<IUserStore>()(
@@ -19,8 +22,11 @@ const useUserStore = create<IUserStore>()(
       return {
         user: null,
         token: null,
+        email: '',
+        setEmail: (email: string) => set({ email }) ,
         setUser: (user: IUser) => set({ user }),
         setToken: (token: string | null) => set({ token }),
+        logout: () => set({ user: null, token: null, email: '' }),
       };
     },
     {

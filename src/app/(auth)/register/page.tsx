@@ -6,7 +6,7 @@ import { Box } from "@/ui/primitives/ui-layout";
 import Image from "next/image";
 import LogoIcon from "@/svgs/logo.svg";
 import Link from "next/link";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail} from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import SERVER from "@/util/server";
 import { useRouter } from "next/router";
@@ -37,18 +37,17 @@ const Page = () => {
 
 
   const mutation = useMutation({
-    mutationFn: (user: UserPayload) => SERVER.post('auth/signupotp', user),
-    onSuccess: (data) => {
+    mutationFn: (user: UserPayload) => SERVER.post('auth/signupotp', { user }),
+    onSuccess: () => {
       router.push('/verify-otp');
-      console.log(data);
+
     },
     onError: (error) => console.error(error)
   })
 
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
 
+  const handleSubmit = (e: FormEvent) => {
     const {email, code} = user;
     mutation.mutate({email, code})
   }

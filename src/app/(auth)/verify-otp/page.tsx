@@ -7,13 +7,19 @@ import Image from "next/image";
 import LogoIcon from "@/svgs/logo.svg";
 import OtpInput from '@/modules/inputs/OtpModule';
 import SERVER from '@/util/server';
-import { useRouter } from 'next/router';
+import { useRouter } from "next/navigation";
+import useUserStore from '@/pages/home/state/use-user-state'
+import Link from 'next/link';
+
 
 
 
 const VerifyOtp = () => {
 
-  const router = useRouter()
+
+  const router = useRouter();
+  const { email, setToken } = useUserStore();
+
   const [otp, setOtp] = useState('');
 
   const handleOtpChange = (val: string) => {
@@ -22,11 +28,18 @@ const VerifyOtp = () => {
 
 
   const handleSubmit = async  () => {
-    const res = await SERVER.post('', otp)
-   if(res.data){
-     console.log(otp)
-    router.replace('/')
-   }
+
+    try {
+      const res = await SERVER.post('auth/signin', { code: otp, email })
+      if(res.data){
+        const token = res.data.token;
+        setToken(token)
+         router.replace('/')
+      }
+      
+    } catch (error: unknown) {
+      console.error(error)
+    }
   }
 
 
@@ -59,7 +72,7 @@ const VerifyOtp = () => {
         <Text className="text-center font-medium text-[1.2rem] md:text-[1.5rem] text-white">
         Verfy your Email
         </Text>
-        <Text className="text-center font-light text-[.9rem] md:text-[.9rem] text-gray-300 mb-8">
+        <Text className="text-center font-light text-[.9rem] md:text-[.9rem] text-gray-300 mb-1">
           Enter the 4-digits pin sent to your mail
         </Text>
 
@@ -73,7 +86,21 @@ const VerifyOtp = () => {
           >
             <Text className="pt-1">Verify</Text>
           </button>
+
+          <Box className="flex gap-2 items-center justify-between mt-2">
+            <Link href="/login" className='flex justify-start'>
+              <Text className="text-[.95rem] font-light text-[#2d2c76] md:text-[#d8dfe8]">
+                Back to Login
+              </Text>
+            </Link>
+
+            <Text className="text-[.95rem] font-light text-[#ffffff] flex justify-end">
+               Resend OTP
+            </Text>
+            
+          </Box>
          </Box>
+
     </Box>
   )
 }

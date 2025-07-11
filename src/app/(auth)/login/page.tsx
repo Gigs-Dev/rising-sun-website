@@ -10,18 +10,21 @@ import { Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import SERVER from "@/util/server";
+import useUserStore from '@/pages/home/state/use-user-state'
+
 
 
 const Page = () => {
+
+  const setAuthEmail = useUserStore((state) => state.setEmail)
+
   const router = useRouter()
-  const [email, setEmail] = useState<string>('');
+  const [email, setEmail] = useState('');
 
   const mutation = useMutation({
-    mutationFn: async (email: string) => {
-      return SERVER.post(`auth/signinotp`, { email })
-    },
-    onSuccess: (data) => {
-      console.log(data)
+    mutationFn: (email: string) =>  SERVER.post(`auth/signinotp`, { email }),
+    onSuccess: () => {
+      setAuthEmail(email)
       router.push('/verify-otp')
     },
     onError: (error) => {
