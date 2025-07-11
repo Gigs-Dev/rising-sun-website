@@ -13,11 +13,12 @@ import Link from 'next/link';
 
 
 
+
 const VerifyOtp = () => {
+
 
   const router = useRouter();
   const { email, setToken } = useUserStore();
-
 
   const [otp, setOtp] = useState('');
 
@@ -27,6 +28,7 @@ const VerifyOtp = () => {
 
 
   const handleSubmit = async  () => {
+
     try {
       const res = await SERVER.post('auth/signin', { code: otp, email })
       if(res.data){

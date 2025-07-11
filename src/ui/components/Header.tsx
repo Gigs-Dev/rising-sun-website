@@ -17,6 +17,7 @@ import useUserStore from "@/pages/home/state/use-user-state";
 import { useRouter } from "next/navigation";
 
 
+
 const Header = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -57,7 +58,6 @@ const Header = () => {
   }
 
 
-
   return (
     <Flex className="fixed top-[1px] left-0 w-full md:justify-around justify-between px-4 py-5 bg-transparent z-50">
       {/* Links container */}
@@ -94,6 +94,7 @@ const Header = () => {
           } lg:flex flex-col lg:flex-row lg:items-center lg:gap-8 absolute lg:static top-full left-0 w-full lg:w-auto backdrop-blur lg:backdrop-blur-none lg:bg-transparent p-4 lg:p-0`}
         >
 
+          
           { token ?
             <span 
             onClick={() => {

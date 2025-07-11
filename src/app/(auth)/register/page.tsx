@@ -40,14 +40,14 @@ const Page = () => {
     mutationFn: (user: UserPayload) => SERVER.post('auth/signupotp', { user }),
     onSuccess: () => {
       router.push('/verify-otp');
+
     },
     onError: (error) => console.error(error)
   })
 
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
 
+  const handleSubmit = (e: FormEvent) => {
     const {email, code} = user;
     mutation.mutate({email, code})
   }
