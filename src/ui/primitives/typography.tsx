@@ -1,9 +1,9 @@
 import { SpanTypes, UIProps } from "@/types/ui";
 import React, { FC } from "react";
 
-const Text = ({ children, className = "", style }: UIProps) => {
+const Text = ({ children, className = "", style, onClick }: UIProps) => {
   return (
-    <h1 className={`${className}`} style={style}>
+    <h1 className={`${className}`} style={style} onClick={onClick}>
       {children}
     </h1>
   );

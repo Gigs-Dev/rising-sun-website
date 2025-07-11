@@ -53,9 +53,9 @@ const Header = () => {
   const handleLogout = () => {
     logout();
     router.replace('/login')
+    console.log('Cleared!!!')
   }
 
-  console.log(token);
 
 
   return (
@@ -94,21 +94,32 @@ const Header = () => {
           } lg:flex flex-col lg:flex-row lg:items-center lg:gap-8 absolute lg:static top-full left-0 w-full lg:w-auto backdrop-blur lg:backdrop-blur-none lg:bg-transparent p-4 lg:p-0`}
         >
 
-          <span 
-          onClick={() => {
-          handlePayment({
-            callback: (response) => {
-               console.log(response);
-                closePaymentModal() 
-            },
-            onClose: () => {},
-          });
-        }}
-            className={`text-[.9rem] cursor-pointer pt-1 bg-[green]  p-3 rounded-md ${
-                isMenuOpen ? "py-[5px] text-center text-[#fff]" : "py-[0px]"
-              } font-regular`}>
-              Fund Account
-          </span>
+          { token ?
+            <span 
+            onClick={() => {
+            handlePayment({
+              callback: (response) => {
+                console.log(response);
+                  closePaymentModal() 
+              },
+              onClose: () => {},
+            });
+          }}
+              className={`text-[.9rem] cursor-pointer pt-1 bg-[green]  p-3 rounded-md ${
+                  isMenuOpen ? "py-[5px] text-center text-[#fff]" : "py-[0px]"
+                } font-regular`}>
+                Fund Account
+            </span>:
+
+             <Box
+              className={`text-[.9rem] cursor-pointer pt-1 ${
+                isMenuOpen ? "py-[20px] text-[#000000]" : "py-[0px]"
+              } font-regular`}
+            >
+             <span>Help Center</span>
+            </Box>
+          }
+
 
           {TopBarData.map((item) => (
             <Box

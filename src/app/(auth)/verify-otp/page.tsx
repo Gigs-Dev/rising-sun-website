@@ -16,8 +16,8 @@ import Link from 'next/link';
 const VerifyOtp = () => {
 
   const router = useRouter();
-  const email = useUserStore((state) => state.email);
-  const setToken = useUserStore((state) => state.setToken)
+  const { email, setToken } = useUserStore();
+
 
   const [otp, setOtp] = useState('');
 
@@ -70,7 +70,7 @@ const VerifyOtp = () => {
         <Text className="text-center font-medium text-[1.2rem] md:text-[1.5rem] text-white">
         Verfy your Email
         </Text>
-        <Text className="text-center font-light text-[.9rem] md:text-[.9rem] text-gray-300 mb-8">
+        <Text className="text-center font-light text-[.9rem] md:text-[.9rem] text-gray-300 mb-1">
           Enter the 4-digits pin sent to your mail
         </Text>
 
