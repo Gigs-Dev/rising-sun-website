@@ -10,6 +10,8 @@ interface IUserStore {
   user: IUser | null;
   email: string | null;
   token: string | null;
+  loading?: boolean,
+  error?: unknown | string | null;
   setUser: (user: IUser) => void;
   setEmail: (email: string) => void;
   setToken: (token: string | null) => void;
@@ -23,7 +25,11 @@ const useUserStore = create<IUserStore>()(
         user: null,
         token: null,
         email: '',
+        loading: false,
+        error: null,
         setEmail: (email: string) => set({ email }) ,
+        setLoading: (loading: boolean) => set({ loading }),
+        setError: (error: string) => set({ error }),
         setUser: (user: IUser) => set({ user }),
         setToken: (token: string | null) => set({ token }),
         logout: () => set({ user: null, token: null, email: '' }),

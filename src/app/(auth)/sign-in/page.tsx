@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { ChangeEvent, useState, FormEvent } from "react";
 import { Text } from "@/ui/primitives/typography";
@@ -6,36 +6,22 @@ import { Box } from "@/ui/primitives/ui-layout";
 import Image from "next/image";
 import LogoIcon from "@/svgs/logo.svg";
 import Link from "next/link";
-import { Mail } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
-import SERVER from "@/util/server";
-import useUserStore from '@/pages/home/state/use-user-state'
+import { Mail, Loader2 } from "lucide-react";
+import { Button } from "@/ui/primitives/buttons/Button";
+import { useSignInMutation } from "@/util/api";
 
 
 
 const Page = () => {
 
-  const setAuthEmail = useUserStore((state) => state.setEmail)
-
-  const router = useRouter()
   const [email, setEmail] = useState('');
 
-  const mutation = useMutation({
-    mutationFn: (email: string) =>  SERVER.post(`auth/signinotp`, { email }),
-    onSuccess: () => {
-      setAuthEmail(email)
-      router.push('/verify-otp')
-    },
-    onError: (error) => {
-      console.error(error)
-    }
-  })
+  const signInMutation = useSignInMutation(email)
 
   
-  const handleLogin = async (e: FormEvent) => {
+  const handleLogin = (e: FormEvent) => {
     e.preventDefault()
-    mutation.mutateAsync(email)
+    signInMutation.mutate(email)
   }
 
   return (
@@ -80,7 +66,7 @@ const Page = () => {
               id="email"
               name="email"
               type="email"
-              autoComplete="email"
+              autoComplete="true"
               required
               placeholder="Enter your email"
               onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
@@ -101,13 +87,15 @@ const Page = () => {
           </Box>
 
           {/* Submit Button */}
-          <button
+          <Button
             type="submit"
             onClick={handleLogin}
-            className="w-full py-2 px-4 bg-[#9d4edd] text-[#f1f5f8] rounded-[10px] hover:bg-[#9d4edd] focus:outline-none focus:ring-2 focus:ring-[#9d4edd] font-regular trailing-[1rem]"
+            variant="primary"
+            className="w-full"
+            // className="w-full py-2 px-4 bg-[#9d4edd] text-[#f1f5f8] rounded-[10px] hover:bg-[#9d4edd] focus:outline-none focus:ring-2 focus:ring-[#9d4edd] font-regular trailing-[1rem]"
           >
             <Text className="pt-1">Continue</Text>
-          </button>
+          </Button>
         </form>
         
       </Box>

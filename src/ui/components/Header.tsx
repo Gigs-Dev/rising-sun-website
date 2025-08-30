@@ -13,7 +13,7 @@ import MenuIcon from "@/svgs/menu.svg";
 import CloseIcon from "@/svgs/close.svg";
 import { TopBarData } from "@/data/top-bar-list";
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
-import useUserStore from "@/pages/home/state/use-user-state";
+import useUserStore from "@/store/state/use-user-state";
 import { useRouter } from "next/navigation";
 
 

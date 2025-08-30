@@ -40,7 +40,7 @@ const Page = () => {
     mutationFn: (user: UserPayload) => SERVER.post('auth/signupotp', user ),
     onSuccess: () => {
       console.log('Success!!!')
-      // router.push('/verify-otp');
+      router.push('/verify-otp');
 
     },
     onError: (error) => console.error('Error', error)

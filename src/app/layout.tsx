@@ -5,7 +5,10 @@ import QueryClientWrapper from "@/util/QueryClientProvider";
 
 export const metadata = {
   title: "Rising Sun",
-  description: "A beautiful example of Next.js + Tailwind + Local Fonts",
+  description: "Rising Sun Inc - ",
+  icons: {
+    icon: '/logo.svg'
+  }
 };
 
 
