@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Mail} from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import SERVER from "@/util/server";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 
 
@@ -37,17 +37,19 @@ const Page = () => {
 
 
   const mutation = useMutation({
-    mutationFn: (user: UserPayload) => SERVER.post('auth/signupotp', { user }),
+    mutationFn: (user: UserPayload) => SERVER.post('auth/signupotp', user ),
     onSuccess: () => {
-      router.push('/verify-otp');
+      console.log('Success!!!')
+      // router.push('/verify-otp');
 
     },
-    onError: (error) => console.error(error)
+    onError: (error) => console.error('Error', error)
   })
 
 
 
   const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
     const {email, code} = user;
     mutation.mutate({email, code})
   }
@@ -120,7 +122,7 @@ const Page = () => {
              <Text className="text-[.95rem] font-light text-[#ffffff]">
                 Already have an account?
               </Text>
-            <Link href="/login">
+            <Link href="/sign-in">
               <Text className="text-[.95rem] font-light text-[#2d2c76] md:text-[#d8dfe8]">
                 Login
               </Text>

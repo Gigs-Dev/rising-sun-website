@@ -93,7 +93,7 @@ const Page = () => {
              <Text className="text-[.95rem] font-light text-[#ffffff]">
                 Do not have an account?
               </Text>
-            <Link href="/register">
+            <Link href="/sign-up">
               <Text className="text-[.95rem] font-light text-[#2d2c76] md:text-[#d8dfe8]">
                 Create account
               </Text>

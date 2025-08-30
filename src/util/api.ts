@@ -1,5 +1,5 @@
 
-export const URL = 'http://localhost:8800/api/'
+const URL = process.env.SERVER_PRODUCTION_URI
 
 
 export const useGetuUserBal = () => {

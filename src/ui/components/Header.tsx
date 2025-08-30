@@ -25,7 +25,7 @@ const Header = () => {
 
   
   const config = {
-    public_key: 'FLWPUBK_TEST-8269664599bbc1826be700ae429948df-X',
+    public_key: process.env.NEXT_FLUTTERWAVE_PUBLIC_KEY!,
     tx_ref: Date.now().toString(),
       amount: 100,
       currency: 'NGN',
@@ -53,8 +53,7 @@ const Header = () => {
 
   const handleLogout = () => {
     logout();
-    router.replace('/login')
-    console.log('Cleared!!!')
+    router.replace('/sigin-in')
   }
 
 
@@ -140,7 +139,7 @@ const Header = () => {
                 isMenuOpen ? "border border-[#555]" : ""
               } inline-flex bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[1.3rem] gap-2 cursor-pointer`}
             >
-              <Link href="/login">
+              <Link href="/sign-in">
                 <Text className="text-[.9rem] text-[#000000] font-regular pt-1">
                   Account Sign In
                 </Text>
