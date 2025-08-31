@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const SERVER = axios.create({
     baseURL: process.env.NEXT_PUBLIC_SERVER_PRODUCTION_URI,
-    timeout: 50000,
+    timeout: 100000,
 
     headers: {
         'Content-Type': 'application/json', 

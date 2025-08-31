@@ -8,6 +8,7 @@ import LogoIcon from "@/svgs/logo.svg";
 import Link from "next/link";
 import { Mail, Loader2} from "lucide-react";
 import { useSignUpMutation } from "@/util/api";
+import { Button } from "@/ui/primitives/buttons/Button";
 
 
 
@@ -31,7 +32,7 @@ const Page = () => {
     setUser((user) => ({...user, [name]: value}))
   }
 
-  const mutation = useSignUpMutation()
+  const mutation = useSignUpMutation(user.email)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -116,15 +117,16 @@ const Page = () => {
 
 
           {/* Submit Button */}
-          <button
+          <Button
             type="submit"
-            className="w-full py-2 px-4 bg-[#9d4edd] text-[#f1f5f8] rounded-[10px] hover:bg-[#9d4edd] focus:outline-none focus:ring-2 focus:ring-[#9d4edd] font-regular trailing-[1rem]"
+            className="w-full"
+            variant="primary"
+            disabled={mutation.isPending}
           >
-          {mutation.isPending ?
-          <Loader2/>:
-          <Text className="pt-1">Continue</Text>
-          }
-          </button>
+          {mutation.isPending && <Loader2/>}
+
+          <Text className="pt-1">{mutation.isPending ? 'Loading...': 'Continue'}</Text>
+          </Button>
         </form>
       </Box>
     </Box>

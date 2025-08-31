@@ -90,14 +90,14 @@ const Page = () => {
           <Button
             type="submit"
             onClick={handleLogin}
-            variant="secondary"
+            variant="primary"
             className="w-full bg-[#9d4edd]"
             disabled={signInMutation.isPending}
           >
-            { signInMutation.isPending ?
-            <Loader/>:
-            <Text className="pt-1">Continue</Text>
-            }
+            {signInMutation.isPending &&  <Loader/>}
+
+            <Text className="pt-1">{signInMutation.isPending ? 'Loading...' : 'Continue'}</Text>
+            
           </Button>
         </form>
         

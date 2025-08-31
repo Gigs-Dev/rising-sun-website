@@ -53,7 +53,7 @@ const Header = () => {
 
   const handleLogout = () => {
     logout();
-    router.replace('/sigin-in')
+    router.replace('/sign-in')
   }
 
 

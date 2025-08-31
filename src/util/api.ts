@@ -51,7 +51,7 @@ export const useSignInMutation = () => {
 }
 
 
-export const useSignUpMutation = () => {
+export const useSignUpMutation = (user: string) => {
   const setAuthEmail = useUserStore((state) => state.setEmail);
   const router = useRouter();
 
@@ -60,8 +60,8 @@ export const useSignUpMutation = () => {
       const response = await SERVER.post<ApiResponse>(`auth/signupotp`, userData);
       return response.data;
     },
-    onSuccess: (data, variables) => {
-      setAuthEmail(variables.email);
+    onSuccess: (data) => {
+      setAuthEmail(user);
       toast.success(`${ data.message || 'Signup successful! Please verify your OTP.'}`, {...toastOptions})
       setTimeout(() => {
         router.push("/verify-otp");
@@ -73,3 +73,23 @@ export const useSignUpMutation = () => {
     },
   });
 };
+
+
+
+export const useVerifyOtpMutation = () => {
+  const mutation = useMutation({
+    mutationFn: async (data) => {
+      const res = await SERVER.post('/', data);
+      return res.data
+    },
+    onSuccess: (data) => {
+
+    },
+    onError: (error) => {
+
+    },
+  })
+
+  return mutation;
+}
+
