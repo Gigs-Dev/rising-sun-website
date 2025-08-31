@@ -6,7 +6,7 @@ import { Box } from "@/ui/primitives/ui-layout";
 import Image from "next/image";
 import LogoIcon from "@/svgs/logo.svg";
 import Link from "next/link";
-import { Mail, Loader2 } from "lucide-react";
+import { Mail, Loader } from "lucide-react";
 import { Button } from "@/ui/primitives/buttons/Button";
 import { useSignInMutation } from "@/util/api";
 
@@ -16,12 +16,12 @@ const Page = () => {
 
   const [email, setEmail] = useState('');
 
-  const signInMutation = useSignInMutation(email)
+  const signInMutation = useSignInMutation()
 
   
   const handleLogin = (e: FormEvent) => {
     e.preventDefault()
-    signInMutation.mutate(email)
+    signInMutation.mutate({email})
   }
 
   return (
@@ -90,11 +90,14 @@ const Page = () => {
           <Button
             type="submit"
             onClick={handleLogin}
-            variant="primary"
-            className="w-full"
-            // className="w-full py-2 px-4 bg-[#9d4edd] text-[#f1f5f8] rounded-[10px] hover:bg-[#9d4edd] focus:outline-none focus:ring-2 focus:ring-[#9d4edd] font-regular trailing-[1rem]"
+            variant="secondary"
+            className="w-full bg-[#9d4edd]"
+            disabled={signInMutation.isPending}
           >
+            { signInMutation.isPending ?
+            <Loader/>:
             <Text className="pt-1">Continue</Text>
+            }
           </Button>
         </form>
         

@@ -6,10 +6,8 @@ import { Box } from "@/ui/primitives/ui-layout";
 import Image from "next/image";
 import LogoIcon from "@/svgs/logo.svg";
 import Link from "next/link";
-import { Mail} from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
-import SERVER from "@/util/server";
-import { useRouter } from "next/navigation";
+import { Mail, Loader2} from "lucide-react";
+import { useSignUpMutation } from "@/util/api";
 
 
 
@@ -26,8 +24,6 @@ const Page = () => {
     code: ''
   })
 
-  const router = useRouter()
-
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -35,18 +31,7 @@ const Page = () => {
     setUser((user) => ({...user, [name]: value}))
   }
 
-
-  const mutation = useMutation({
-    mutationFn: (user: UserPayload) => SERVER.post('auth/signupotp', user ),
-    onSuccess: () => {
-      console.log('Success!!!')
-      router.push('/verify-otp');
-
-    },
-    onError: (error) => console.error('Error', error)
-  })
-
-
+  const mutation = useSignUpMutation()
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -135,7 +120,10 @@ const Page = () => {
             type="submit"
             className="w-full py-2 px-4 bg-[#9d4edd] text-[#f1f5f8] rounded-[10px] hover:bg-[#9d4edd] focus:outline-none focus:ring-2 focus:ring-[#9d4edd] font-regular trailing-[1rem]"
           >
-            <Text className="pt-1">Continue</Text>
+          {mutation.isPending ?
+          <Loader2/>:
+          <Text className="pt-1">Continue</Text>
+          }
           </button>
         </form>
       </Box>

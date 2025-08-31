@@ -4,43 +4,72 @@ import { useMutation } from "@tanstack/react-query"
 import SERVER from "./server"
 import useUserStore from "@/store/state/use-user-state"
 import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
+import { toastOptions } from "@/helpers/toastOptions";
+
+interface SignUpProps{
+  email: string;
+  code: string
+}
+
+interface SignInProps {
+  email: string
+}
+
+interface ApiResponse {
+  success: boolean;
+  message: string;
+  data?: any;
+}
 
 
+export const useSignInMutation = () => {
 
-export const useSignInMutation = (email: string) => {
-    
-    const setAuthEmail = useUserStore((state) => state.setEmail)
-    
-    const router = useRouter();
+  const router = useRouter();
 
-    const mutation = useMutation({
-    mutationFn: (email: string) =>  SERVER.post(`auth/signinotp`, { email }),
-    onSuccess: () => {
-      setAuthEmail(email)
-      router.push('/verify-otp')
+  const mutation = useMutation<ApiResponse, AxiosError, SignInProps>({
+    mutationFn: async ({ email }: SignInProps) => {
+      const response = await SERVER.post<ApiResponse>("auth/signinotp", { email });
+      return response.data;
     },
-    onError: (error: any) => {
-      console.error('Error', error.message)
-    }
-  })
+    onSuccess: (data) => {
+      toast.success(data.message || "Sign-in successful! Please verify your OTP.", { ...toastOptions });
+
+      setTimeout(() => {
+        router.push("/verify-otp");
+      }, 800);
+    },
+    onError: (error: AxiosError<any>) => {
+      const message = error.response?.data?.message || error.message || "Something went wrong, please try again later";
+      toast.error(message, { ...toastOptions });
+      console.error("Sign-in Error:", message);
+    },
+  });
 
   return mutation
 }
 
 
-export const useSignUpMutation = (user: {}) => {
-    const router = useRouter();
+export const useSignUpMutation = () => {
+  const setAuthEmail = useUserStore((state) => state.setEmail);
+  const router = useRouter();
 
-    const mutation = useMutation({
-    mutationFn: (email: string) =>  SERVER.post(`auth/signupotp`, user),
-    onSuccess: () => {
-      router.push('/verify-otp')
+  return useMutation<ApiResponse, AxiosError, SignUpProps>({
+    mutationFn: async (userData: SignUpProps) => {
+      const response = await SERVER.post<ApiResponse>(`auth/signupotp`, userData);
+      return response.data;
     },
-    onError: (error: any) => {
-      console.error('Error', error.message)
-    }
-  })
-
-  return mutation
-}
-
+    onSuccess: (data, variables) => {
+      setAuthEmail(variables.email);
+      toast.success(`${ data.message || 'Signup successful! Please verify your OTP.'}`, {...toastOptions})
+      setTimeout(() => {
+        router.push("/verify-otp");
+      }, 800);
+    },
+    onError: (error) => {
+      toast.error(`${error?.response?.data || error.message || 'Something went wrong, please try again later'}`, {...toastOptions})
+      console.error("Signup Error:", error.response?.data || error.message);
+    },
+  });
+};

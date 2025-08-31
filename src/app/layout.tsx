@@ -1,10 +1,12 @@
 import "./globals.css";
 import { founders } from "@/ui/fonts/font-config";
 import QueryClientWrapper from "@/util/QueryClientProvider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 export const metadata = {
-  title: "Rising Sun",
+  title: "Rising Sun Inc",
   description: "Rising Sun Inc - ",
   icons: {
     icon: '/logo.svg'
@@ -23,6 +25,7 @@ export default function RootLayout({
         <QueryClientWrapper>
            {children}
         </QueryClientWrapper>
+        <ToastContainer/>
         </body>
     </html>
   );
