@@ -34,7 +34,7 @@ export const useAuthMutation = (user: string, type: 'sign-up' | 'sign-in') => {
       return response.data;
     },
     onSuccess: (data) => {
-     {type === 'sign-up' && setAuthEmail(user)}
+     setAuthEmail(user)
      {type === 'sign-up' ?
       toast.success(`${ data.message || 'Signup successful! Please verify your OTP.'}`, {...toastOptions}) :
       toast.success(`${ data.message || 'Signin successful! Please verify your OTP.'}`, {...toastOptions})

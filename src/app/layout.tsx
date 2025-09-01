@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export const metadata = {
   title: "Rising Sun Inc",
-  description: "Rising Sun Inc - ",
+  description: "Rising Sun Inc - Discover popular games, fund your wallet and start winning",
   icons: {
     icon: '/logo.svg'
   }

@@ -2,7 +2,8 @@ import axios from 'axios';
 
 
 const SERVER = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_SERVER_PRODUCTION_URI,
+    // baseURL: process.env.NEXT_PUBLIC_SERVER_PRODUCTION_URI,
+    baseURL: process.env.NEXT_PUBLIC_SERVER_URI,
     timeout: 100000,
 
     headers: {
