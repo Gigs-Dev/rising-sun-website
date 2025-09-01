@@ -133,7 +133,7 @@ const Header = () => {
           ))}
 
           {/*  */}
-          {(!token || token === null || user === null) ? (
+          {( !token ) ? (
             <HStack
               className={`${
                 isMenuOpen ? "border border-[#555]" : ""

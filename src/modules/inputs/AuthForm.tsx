@@ -4,7 +4,7 @@ import { Button } from "@/ui/primitives/buttons/Button";
 import { Text } from "@/ui/primitives/typography";
 import { Box } from "@/ui/primitives/ui-layout";
 import { useAuthMutation } from "@/util/api";
-import { Loader2, Mail } from "lucide-react";
+import { Loader, Mail } from "lucide-react";
 import LogoIcon from "@/svgs/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
@@ -113,7 +113,7 @@ const AuthForm = ({type}: AuthType) => {
             variant="primary"
             disabled={mutation.isPending}
           >
-          {mutation.isPending && <Loader2/>}
+          {mutation.isPending && <Loader/>}{" "}
 
           <Text className="pt-1">{mutation.isPending ? ' Loading...': 'Continue'}</Text>
           </Button>
