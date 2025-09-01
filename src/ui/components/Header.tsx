@@ -44,7 +44,7 @@ const Header = () => {
 
   const handlePayment = useFlutterwave(config);
 
-  const { token, logout } = useUserStore();
+  const { token, logout, user } = useUserStore();
 
   const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
@@ -133,7 +133,7 @@ const Header = () => {
           ))}
 
           {/*  */}
-          {token === null ? (
+          {(!token || token === null || user === null) ? (
             <HStack
               className={`${
                 isMenuOpen ? "border border-[#555]" : ""
@@ -153,7 +153,12 @@ const Header = () => {
               />
             </HStack>
           ) : (
-            <Text onClick={handleLogout} className="cursor-pointer">Log out</Text>
+            <>
+            <div className="flex items-center justify-center rounded-full h-[45px] w-[45px] border-[#dff] border-2 cursor-pointer" onClick={handleLogout}>
+              <span className="text-3xl mt-2 font-[500] text-center flex items-center justify-center">ZE</span>
+            </div>
+            {/* <Text onClick={handleLogout} className="cursor-pointer">Log out</Text> */}
+            </>
           )}
         </Flex>
       </Flex>

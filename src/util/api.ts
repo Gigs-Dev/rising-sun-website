@@ -8,13 +8,9 @@ import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { toastOptions } from "@/helpers/toastOptions";
 
-interface SignUpProps{
+interface AuthProps{
   email: string;
-  code: string
-}
-
-interface SignInProps {
-  email: string
+  code?: string
 }
 
 interface ApiResponse {
@@ -24,54 +20,36 @@ interface ApiResponse {
 }
 
 
-export const useSignInMutation = () => {
 
-  const router = useRouter();
-
-  const mutation = useMutation<ApiResponse, AxiosError, SignInProps>({
-    mutationFn: async ({ email }: SignInProps) => {
-      const response = await SERVER.post<ApiResponse>("auth/signinotp", { email });
-      return response.data;
-    },
-    onSuccess: (data) => {
-      toast.success(data.message || "Sign-in successful! Please verify your OTP.", { ...toastOptions });
-
-      setTimeout(() => {
-        router.push("/verify-otp");
-      }, 800);
-    },
-    onError: (error: AxiosError<any>) => {
-      const message = error.response?.data?.message || error.message || "Something went wrong, please try again later";
-      toast.error(message, { ...toastOptions });
-      console.error("Sign-in Error:", message);
-    },
-  });
-
-  return mutation
-}
-
-
-export const useSignUpMutation = (user: string) => {
+export const useAuthMutation = (user: string, type: 'sign-up' | 'sign-in') => {
   const setAuthEmail = useUserStore((state) => state.setEmail);
   const router = useRouter();
 
-  return useMutation<ApiResponse, AxiosError, SignUpProps>({
-    mutationFn: async (userData: SignUpProps) => {
-      const response = await SERVER.post<ApiResponse>(`auth/signupotp`, userData);
+  const mutation = useMutation<ApiResponse, AxiosError, AuthProps>({
+    mutationFn: async (userData: AuthProps) => {
+      const response = type === 'sign-up' ? 
+      await SERVER.post<ApiResponse>(`auth/signupotp`, userData):
+      await SERVER.post<ApiResponse>(`auth/signinotp`, userData);
+
       return response.data;
     },
     onSuccess: (data) => {
-      setAuthEmail(user);
-      toast.success(`${ data.message || 'Signup successful! Please verify your OTP.'}`, {...toastOptions})
+     {type === 'sign-up' && setAuthEmail(user)}
+     {type === 'sign-up' ?
+      toast.success(`${ data.message || 'Signup successful! Please verify your OTP.'}`, {...toastOptions}) :
+      toast.success(`${ data.message || 'Signin successful! Please verify your OTP.'}`, {...toastOptions})
+     }
       setTimeout(() => {
         router.push("/verify-otp");
       }, 800);
     },
-    onError: (error) => {
-      toast.error(`${error?.response?.data || error.message || 'Something went wrong, please try again later'}`, {...toastOptions})
-      console.error("Signup Error:", error.response?.data || error.message);
+    onError: (error: any) => {
+      toast.error(`${error?.response?.data?.msg || error.message || 'Something went wrong, please try again later'}`, {...toastOptions})
+      // console.error("Auth Error:", error.response?.data || error.message);
     },
   });
+
+  return mutation;
 };
 
 
