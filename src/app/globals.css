@@ -96,6 +96,29 @@ body {
     linear-gradient(180deg,#0783ab,#00698a);
 }
 
+
+/* //guess game */
+.guess-card-container{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  gap: 10px;
+  margin: 1rem 0;
+}
+
+
+.guess-cards{
+  background-color: rgb(3, 29, 48);
+  border: 1px solid gainsboro;
+  width: 150px;
+  cursor: pointer;
+  height: 200px;
+}
+
+/* .backside{} */
+
+
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
