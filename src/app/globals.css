@@ -96,6 +96,69 @@ body {
     linear-gradient(180deg,#0783ab,#00698a);
 }
 
+
+/* //guess game */
+/* guess game */
+.guess-card-container{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  gap: 10px;
+  margin: 1rem 0;
+  perspective: 1000px; /* 👈 makes 3D visible */
+}
+
+.guess-cards{
+  position: relative;
+  width: 150px;
+  height: 200px;
+  display: grid;
+  place-items: center;
+  border: 1px solid gainsboro;
+  border-radius: 8px;
+  transform-style: preserve-3d;          /* 👈 rotate the whole card in 3D */
+  transition: transform 200ms linear;    /* smoother + only transform */
+  will-change: transform;
+}
+
+/* The flipped state rotates the card to reveal the front side */
+.guess-cards.flipped{
+  transform: rotateY(180deg);
+}
+
+/* Hover can add a subtle lift without overriding rotation */
+.guess-cards:hover{
+  cursor: pointer;
+  translate: -5px -5px; /* no rotate here so we don't fight .flipped */
+}
+
+/* Faces (front and back) */
+.frontside,
+.backside{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; /* Safari */
+  background-color: rgb(3, 29, 48);
+  color: white;
+  font-size: 2rem;
+}
+
+/* Show the BACK by default, FRONT is rotated 180 (hidden).
+   When the parent .guess-cards rotates 180deg, the front faces the viewer. */
+.frontside{
+  transform: rotateY(180deg);
+}
+
+.backside{
+  transform: rotateY(0deg);
+}
+
+
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;

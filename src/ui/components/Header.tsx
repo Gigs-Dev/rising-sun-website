@@ -13,7 +13,7 @@ import MenuIcon from "@/svgs/menu.svg";
 import CloseIcon from "@/svgs/close.svg";
 import { TopBarData } from "@/data/top-bar-list";
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
-import useUserStore from "@/pages/home/state/use-user-state";
+import useUserStore from "@/store/state/use-user-state";
 import { useRouter } from "next/navigation";
 
 
@@ -25,7 +25,7 @@ const Header = () => {
 
   
   const config = {
-    public_key: 'FLWPUBK_TEST-8269664599bbc1826be700ae429948df-X',
+    public_key: process.env.NEXT_FLUTTERWAVE_PUBLIC_KEY!,
     tx_ref: Date.now().toString(),
       amount: 100,
       currency: 'NGN',
@@ -44,7 +44,7 @@ const Header = () => {
 
   const handlePayment = useFlutterwave(config);
 
-  const { token, logout } = useUserStore();
+  const { token, logout, user } = useUserStore();
 
   const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
@@ -53,8 +53,7 @@ const Header = () => {
 
   const handleLogout = () => {
     logout();
-    router.replace('/login')
-    console.log('Cleared!!!')
+    router.replace('/sign-in')
   }
 
 
@@ -134,13 +133,13 @@ const Header = () => {
           ))}
 
           {/*  */}
-          {token === null ? (
+          {( !token ) ? (
             <HStack
               className={`${
                 isMenuOpen ? "border border-[#555]" : ""
               } inline-flex bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[1.3rem] gap-2 cursor-pointer`}
             >
-              <Link href="/login">
+              <Link href="/sign-in">
                 <Text className="text-[.9rem] text-[#000000] font-regular pt-1">
                   Account Sign In
                 </Text>
@@ -154,7 +153,12 @@ const Header = () => {
               />
             </HStack>
           ) : (
-            <Text onClick={handleLogout} className="cursor-pointer">Log out</Text>
+            <>
+            <div className="flex items-center justify-center rounded-full h-[45px] w-[45px] border-[#dff] border-2 cursor-pointer" onClick={handleLogout}>
+              <span className="text-3xl mt-2 font-[500] text-center flex items-center justify-center">ZE</span>
+            </div>
+            {/* <Text onClick={handleLogout} className="cursor-pointer">Log out</Text> */}
+            </>
           )}
         </Flex>
       </Flex>

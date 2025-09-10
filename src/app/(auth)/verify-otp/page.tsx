@@ -8,8 +8,10 @@ import LogoIcon from "@/svgs/logo.svg";
 import OtpInput from '@/modules/inputs/OtpModule';
 import SERVER from '@/util/server';
 import { useRouter } from "next/navigation";
-import useUserStore from '@/pages/home/state/use-user-state'
+import useUserStore from '@/store/state/use-user-state'
 import Link from 'next/link';
+import { toast } from 'react-toastify';
+import { toastOptions } from '@/helpers/toastOptions';
 
 
 
@@ -37,8 +39,10 @@ const VerifyOtp = () => {
          router.replace('/')
       }
       
-    } catch (error: unknown) {
+    } catch (error: any) {
       console.error(error)
+      const err = error?.response?.data?.message || 'Something went wrong, please try again later';
+      toast.error(`${err}`, { ...toastOptions })
     }
   }
 

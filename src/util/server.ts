@@ -1,14 +1,14 @@
 import axios from 'axios';
-import { URL } from './api';
 
 
 const SERVER = axios.create({
-    baseURL: URL,
-    timeout: 20000,
+    // baseURL: process.env.NEXT_PUBLIC_SERVER_PRODUCTION_URI,
+    baseURL: process.env.NEXT_PUBLIC_SERVER_URI,
+    timeout: 100000,
 
     headers: {
         'Content-Type': 'application/json', 
-        'Authorization': 'Bearer your_token', 
+        // 'Authorization': 'Bearer your_token', 
       },
 })
 
