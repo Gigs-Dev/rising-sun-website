@@ -111,11 +111,36 @@ body {
   background-color: rgb(3, 29, 48);
   border: 1px solid gainsboro;
   width: 150px;
-  cursor: pointer;
   height: 200px;
+  justify-content: center;
+  display: grid;
+  transition: all linear 200ms;
+  transform: rotate3d(0, 1, 0, 180deg);
+  position: relative;
 }
 
-/* .backside{} */
+.guess-cards .flipped{
+  transform: unset;
+  transform-style: preserve-3d;
+}
+
+.guess-cards:hover{
+  cursor: pointer;
+  transform: rotate3d(0, 1, 0, 180deg) translate(-5px, -5px)
+}
+
+.backside{
+  background-color: rgb(3, 29, 48);
+  width: 100%;
+  position: absolute;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+
+.backside .flipped{
+  transform: rotate3d(0, 1, 0, 180deg);
+}
 
 
 
