@@ -4,52 +4,60 @@ import React, { useEffect, useRef, useState } from 'react';
 import { shuffle } from './shuffle';
 
 
-// const items = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+interface CardState {
+  index: number;
+  value: number | null;
+}
 
-const items = [1, 2, 3, 4, 5, 6]
 
-// const allItems = shuffle([...items, ...items])
 
-const defaultState = { index: -1, value: null }
 
+const items = [1, 2, 3, 4, 5, 6];
+const defaultState:CardState = { index: -1, value: null };
 
 const Card = () => {
+  const [allItems, setAllItems] = useState<number[]>([]);
+  const [firstCard, setFirstCard] = useState(defaultState);
+  const [secondCard, setSecondCard] = useState(defaultState);
+  const [remainingCard, setRemainingCard] = useState(items);
+  const timer = useRef<NodeJS.Timeout | null>(null);
 
-    const [allItems, setAllItems] = useState<number[]>([]);
+  useEffect(() => {
+    setAllItems(shuffle([...items, ...items]));
+  }, []);
 
-    const [firstCard, setFirstCard] = useState(defaultState);
-    const [secondCard, setSecondCard] = useState(defaultState);
-    const [remainingCard, setRemainingCard] = useState(items);
+  const handleClick = (index: number, value: number) => {
 
+    if (firstCard.index === index || secondCard.index === index) return;
 
-    useEffect(() => {
-        setAllItems(shuffle([...items, ...items]))
-    }, [])
-
-    const timer = useRef<string | number | undefined | any>('')
-
-    const handleClick = (index: number, value: any) => {
-        clearTimeout(timer.current)
-
-        timer.current = setTimeout(() => {
-            setFirstCard(defaultState);
-            setSecondCard(defaultState);
-        }, 3000);
-
-
-        if(firstCard.index === -1 || (firstCard.index !== -1 && secondCard.index !== -1)){
-            setSecondCard(defaultState);
-            setFirstCard({index, value})
-        } else if(secondCard.index !== -1 && firstCard.index !== -1){
-            setSecondCard({index, value});
-
-            if(firstCard.value === value){
-                setRemainingCard(remainingCard.filter((card) => card !== value))
-            }
-        }
+    // First card selection
+    if (firstCard.index === -1) {
+      setFirstCard({ index, value });
+      return;
     }
 
+    // Second card selection
+    if (secondCard.index === -1) {
+      setSecondCard({ index, value });
 
+      // Check if it's a match
+      if (firstCard.value === value) {
+        setRemainingCard((prev) => prev.filter((card) => card !== value));
+
+        // Reset cards after a short delay so user sees the match
+        timer.current = setTimeout(() => {
+          setFirstCard(defaultState);
+          setSecondCard(defaultState);
+        }, 1000);
+      } else {
+        // If mismatch → flip back after 1s
+        timer.current = setTimeout(() => {
+          setFirstCard(defaultState);
+          setSecondCard(defaultState);
+        }, 1000);
+      }
+    }
+  };
 
   return (
     <div className="guess-card-container">
@@ -57,7 +65,7 @@ const Card = () => {
         const isFlipped =
           firstCard.index === index ||
           secondCard.index === index ||
-          !remainingCard.includes(index);
+          !remainingCard.includes(item);
 
         return (
           <div
@@ -65,13 +73,14 @@ const Card = () => {
             onClick={() => handleClick(index, item)}
             className={`guess-cards ${isFlipped ? 'flipped' : ''}`}
           >
+            <div className="frontside">{item}</div>
             <div className="backside"></div>
-            {item}
+           
           </div>
         );
       })}
     </div>
-  )
-}
+  );
+};
 
 export default Card;
