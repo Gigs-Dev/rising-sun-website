@@ -110,8 +110,8 @@ body {
 
 .guess-cards{
   position: relative;
-  width: 150px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
   display: grid;
   place-items: center;
   border: 1px solid gainsboro;
@@ -169,3 +169,12 @@ body {
     scrollbar-width: none;
   }
 }
+
+
+@media screen and (max-width: 480px) {
+  .guess-cards{
+    width: 65px;
+    height: 56px;
+  }
+}
+
