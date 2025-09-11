@@ -1,84 +1,64 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, memo ,useCallback, useRef } from 'react';
 import { shuffle } from './shuffle';
 import CardSize from './CardSize';
 import { motion } from 'framer-motion';
 
-interface CardState {
-  index: number;
-  value: number | null;
-}
+const items = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+  11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+];
 
-const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-const defaultState: CardState = { index: -1, value: null };
-
-const Card = () => {
+const Card: React.FC = memo(() => {
   const [allItems, setAllItems] = useState<number[]>([]);
-  const [firstCard, setFirstCard] = useState(defaultState);
-  const [secondCard, setSecondCard] = useState(defaultState);
-  const [remainingCard, setRemainingCard] = useState(items);
-
+  const [opened, setOpened] = useState<number[]>([]); 
+  const [firstIndex, setFirstIndex] = useState<number | null>(null);
+  const [secondIndex, setSecondIndex] = useState<number | null>(null);
   const [gridSize, setGridSize] = useState<number>(16);
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
 
-  const timer = useRef<NodeJS.Timeout | null>(null);
-
-  // 🔹 Function to reset the game
   const resetGame = (newGridSize = gridSize) => {
-    setAllItems(shuffle([...items, ...items]));
-    setFirstCard(defaultState);
-    setSecondCard(defaultState);
-    setRemainingCard(items);
+    setAllItems(shuffle([...items, ...items])); 
+    setOpened([]);
+    setFirstIndex(null);
+    setSecondIndex(null);
     setGameStatus('playing');
     setGridSize(newGridSize);
   };
 
-
-
-  // Reset when gridSize changes from dropdown
   useEffect(() => {
     resetGame(gridSize);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gridSize]);
 
-  const handleClick = (index: number, value: number) => {
-    if (gameStatus !== 'playing') return;
-    if (firstCard.index === index || secondCard.index === index) return;
 
-    if (firstCard.index === -1) {
-      setFirstCard({ index, value });
+  const handleClick = useCallback((index: number) => {
+    if (gameStatus !== 'playing') return;
+    if (opened.includes(index)) return; 
+    
+    // first pick
+    if (firstIndex === null) {
+      setFirstIndex(index);
+      setOpened(prev => (prev.includes(index) ? prev : [...prev, index]));
       return;
     }
 
-    if (secondCard.index === -1) {
-      setSecondCard({ index, value });
+    // second pick
+    if (secondIndex === null) {
+      setSecondIndex(index);
+      setOpened(prev => (prev.includes(index) ? prev : [...prev, index]));
 
-      if (firstCard.value === value) {
-        // ✅ Match
-        setRemainingCard((prev) => {
-          const updated = prev.filter((card) => card !== value);
-          if (updated.length === 0) {
-            setGameStatus('won');
-          }
-          return updated;
-        });
+      const firstVal = allItems[firstIndex];
+      const secondVal = allItems[index];
 
-        timer.current = setTimeout(() => {
-          setFirstCard(defaultState);
-          setSecondCard(defaultState);
-        }, 1000);
+      if (firstVal === secondVal) {
+        setGameStatus('won');
       } else {
-        // ❌ Mismatch → lose immediately
         setGameStatus('lost');
-
-        timer.current = setTimeout(() => {
-          setFirstCard(defaultState);
-          setSecondCard(defaultState);
-        }, 1000);
       }
+      return;
     }
-  };
+  },[gameStatus, firstIndex]);
 
   return (
     <>
@@ -86,32 +66,24 @@ const Card = () => {
 
       <div
         className="guess-card-container"
-        style={{
-          gridTemplateColumns: `repeat(${Math.sqrt(gridSize)}, 1fr)`,
-        }}
+        style={{ gridTemplateColumns: `repeat(${Math.sqrt(gridSize)}, 1fr)` }}
       >
         {allItems.slice(0, gridSize).map((item, index) => {
-          const isFlipped =
-            firstCard.index === index ||
-            secondCard.index === index ||
-            !remainingCard.includes(item);
+          const isFlipped = opened.includes(index);
 
           return (
             <motion.div
-              key={`${gridSize}-${index}`}
-              initial={{ opacity: 0, scale: 0.8 }}
+              key={`${gridSize}-${index}-${item}`}
+              initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
+              transition={{ duration: 0.36, delay: index * 0.02 }}
             >
               <div
-                // ✅ Disable clicks when not playing
-                onClick={() => gameStatus === 'playing' && handleClick(index, item)}
-                className={`guess-cards ${isFlipped ? 'flipped' : ''} ${
-                  gameStatus !== 'playing' ? 'pointer-events-none opacity-70' : ''
-                }`}
+                onClick={() => handleClick(index)}
+                className={`guess-cards ${isFlipped ? 'flipped' : ''} `}
               >
                 <div className="frontside">{item}</div>
-                <div className="backside"></div>
+                <div className="backside" />
               </div>
             </motion.div>
           );
@@ -121,7 +93,7 @@ const Card = () => {
       <div className="text-center text-xl font-bold my-4">
         {gameStatus === 'won' && <span className="text-green-600">🎉 You Won!</span>}
         {gameStatus === 'lost' && <span className="text-red-600">❌ You Lost!</span>}
-       </div>
+      </div>
 
       {gameStatus !== 'playing' && (
         <div className="text-center mb-4">
@@ -135,6 +107,6 @@ const Card = () => {
       )}
     </>
   );
-};
+});
 
 export default Card;
