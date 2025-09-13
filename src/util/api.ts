@@ -36,12 +36,13 @@ export const useAuthMutation = (user: string, type: 'sign-up' | 'sign-in') => {
     onSuccess: (data) => {
      setAuthEmail(user)
      {type === 'sign-up' ?
-      toast.success(`${ data.message || 'Signup successful! Please verify your OTP.'}`, {...toastOptions}) :
-      toast.success(`${ data.message || 'Signin successful! Please verify your OTP.'}`, {...toastOptions})
+      toast.success(`${ data.message || 'Signup successful! Please verify your OTP.'}`, {...toastOptions}) && router.push('/verify-registration'):
+
+      toast.success(`${ data.message || 'Signin successful! Please verify your OTP.'}`, {...toastOptions}) &&  router.push("/verify-otp");
      }
-      setTimeout(() => {
-        router.push("/verify-otp");
-      }, 800);
+      // setTimeout(() => {
+      //   router.push("/verify-otp");
+      // }, 800);
     },
     onError: (error: any) => {
       toast.error(`${error?.response?.data?.msg || error.message || 'Something went wrong, please try again later'}`, {...toastOptions})
