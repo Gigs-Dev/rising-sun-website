@@ -245,7 +245,7 @@ const EvenOdd = () => {
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleGlobalMouseUp);
     };
-  }, [handleMouseMove]);
+  }, [handleMouseMove, handleMouseUp]);
 
   const handleTouchMove = (e: TouchEvent) => {
     if (!isDragging.current || !sliderRef.current) return;

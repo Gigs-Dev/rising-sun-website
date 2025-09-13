@@ -1,68 +1,16 @@
 'use client';
 
-import React, { useEffect, useState, memo ,useCallback } from 'react';
-import { shuffle } from './shuffle';
-import CardSize from './CardSize';
+import React, { memo } from 'react';
 import { motion } from 'framer-motion';
-
-const items = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-  11, 12, 13, 14, 15, 16, 17, 18, 19, 20
-];
+import CardSize from './CardSize';
+import { useGameLogic } from './useGameLogic';
 
 const Card: React.FC = memo(() => {
-  const [allItems, setAllItems] = useState<number[]>([]);
-  const [opened, setOpened] = useState<number[]>([]); 
-  const [firstIndex, setFirstIndex] = useState<number | null>(null);
-  const [secondIndex, setSecondIndex] = useState<number | null>(null);
-  const [gridSize, setGridSize] = useState<number>(16);
-  const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
-
-  const resetGame = (newGridSize = gridSize) => {
-    setAllItems(shuffle([...items, ...items])); 
-    setOpened([]);
-    setFirstIndex(null);
-    setSecondIndex(null);
-    setGameStatus('playing');
-    setGridSize(newGridSize);
-  };
-
-  useEffect(() => {
-    resetGame(gridSize);
-  }, [gridSize, resetGame]);
-
-
-  const handleClick = useCallback((index: number) => {
-    if (gameStatus !== 'playing') return;
-    if (opened.includes(index)) return; 
-    
-    // first pick
-    if (firstIndex === null) {
-      setFirstIndex(index);
-      setOpened(prev => (prev.includes(index) ? prev : [...prev, index]));
-      return;
-    }
-
-    // second pick
-    if (secondIndex === null) {
-      setSecondIndex(index);
-      setOpened(prev => (prev.includes(index) ? prev : [...prev, index]));
-
-      const firstVal = allItems[firstIndex];
-      const secondVal = allItems[index];
-
-      if (firstVal === secondVal) {
-        setGameStatus('won');
-      } else {
-        setGameStatus('lost');
-      }
-      return;
-    }
-  },[gameStatus, firstIndex]);
+  const { allItems, opened, gridSize, gameStatus, handleClick, resetGame } = useGameLogic();
 
   return (
     <>
-      <CardSize onSizeChange={(val) => setGridSize(val * val)} />
+      <CardSize onSizeChange={(val) => resetGame(val * val)} />
 
       <div
         className="guess-card-container"
@@ -80,7 +28,7 @@ const Card: React.FC = memo(() => {
             >
               <div
                 onClick={() => handleClick(index)}
-                className={`guess-cards ${isFlipped ? 'flipped' : ''} `}
+                className={`guess-cards ${isFlipped ? 'flipped' : ''}`}
               >
                 <div className="frontside">{item}</div>
                 <div className="backside" />

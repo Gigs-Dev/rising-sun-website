@@ -51,7 +51,7 @@ export const useAuthMutation = (user: string, type: 'sign-up' | 'sign-in') => {
     },
     onError: (error) => {
       toast.error(`${(error as AxiosError<ErrorResponse>)?.response?.data?.msg || error.message || 'Something went wrong, please try again later'}`, {...toastOptions})
-      // console.error("Auth Error:", error.response?.data || error.message);
+
     },
   });
 
