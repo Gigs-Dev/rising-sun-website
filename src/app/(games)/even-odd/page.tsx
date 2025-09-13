@@ -253,7 +253,7 @@ const EvenOddPage = () => {
 
   return (
   
-          <>
+          <main className='min-h-screen'>
             <Box className='even-odd-bg w-[400px] mx-auto md:w-[525px] rounded-[10px] h-full border-[10px] border-t-0 border-[#17a2b8] pb-8'>
               {/* Header */}
               <Box className="p-5 text-white">
@@ -438,7 +438,7 @@ const EvenOddPage = () => {
                 </Box>
               </Flex>
             )}
-          </>
+          </main>
         
   );
 };
