@@ -1,86 +1,112 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, memo ,useCallback, useRef } from 'react';
 import { shuffle } from './shuffle';
+import CardSize from './CardSize';
+import { motion } from 'framer-motion';
 
+const items = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+  11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+];
 
-interface CardState {
-  index: number;
-  value: number | null;
-}
-
-
-
-
-const items = [1, 2, 3, 4, 5, 6];
-const defaultState:CardState = { index: -1, value: null };
-
-const Card = () => {
+const Card: React.FC = memo(() => {
   const [allItems, setAllItems] = useState<number[]>([]);
-  const [firstCard, setFirstCard] = useState(defaultState);
-  const [secondCard, setSecondCard] = useState(defaultState);
-  const [remainingCard, setRemainingCard] = useState(items);
-  const timer = useRef<NodeJS.Timeout | null>(null);
+  const [opened, setOpened] = useState<number[]>([]); 
+  const [firstIndex, setFirstIndex] = useState<number | null>(null);
+  const [secondIndex, setSecondIndex] = useState<number | null>(null);
+  const [gridSize, setGridSize] = useState<number>(16);
+  const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
+
+  const resetGame = (newGridSize = gridSize) => {
+    setAllItems(shuffle([...items, ...items])); 
+    setOpened([]);
+    setFirstIndex(null);
+    setSecondIndex(null);
+    setGameStatus('playing');
+    setGridSize(newGridSize);
+  };
 
   useEffect(() => {
-    setAllItems(shuffle([...items, ...items]));
-  }, []);
+    resetGame(gridSize);
+  }, [gridSize]);
 
-  const handleClick = (index: number, value: number) => {
 
-    if (firstCard.index === index || secondCard.index === index) return;
-
-    // First card selection
-    if (firstCard.index === -1) {
-      setFirstCard({ index, value });
+  const handleClick = useCallback((index: number) => {
+    if (gameStatus !== 'playing') return;
+    if (opened.includes(index)) return; 
+    
+    // first pick
+    if (firstIndex === null) {
+      setFirstIndex(index);
+      setOpened(prev => (prev.includes(index) ? prev : [...prev, index]));
       return;
     }
 
-    // Second card selection
-    if (secondCard.index === -1) {
-      setSecondCard({ index, value });
+    // second pick
+    if (secondIndex === null) {
+      setSecondIndex(index);
+      setOpened(prev => (prev.includes(index) ? prev : [...prev, index]));
 
-      // Check if it's a match
-      if (firstCard.value === value) {
-        setRemainingCard((prev) => prev.filter((card) => card !== value));
+      const firstVal = allItems[firstIndex];
+      const secondVal = allItems[index];
 
-        // Reset cards after a short delay so user sees the match
-        timer.current = setTimeout(() => {
-          setFirstCard(defaultState);
-          setSecondCard(defaultState);
-        }, 1000);
+      if (firstVal === secondVal) {
+        setGameStatus('won');
       } else {
-        // If mismatch → flip back after 1s
-        timer.current = setTimeout(() => {
-          setFirstCard(defaultState);
-          setSecondCard(defaultState);
-        }, 1000);
+        setGameStatus('lost');
       }
+      return;
     }
-  };
+  },[gameStatus, firstIndex]);
 
   return (
-    <div className="guess-card-container">
-      {allItems.map((item, index) => {
-        const isFlipped =
-          firstCard.index === index ||
-          secondCard.index === index ||
-          !remainingCard.includes(item);
+    <>
+      <CardSize onSizeChange={(val) => setGridSize(val * val)} />
 
-        return (
-          <div
-            key={index}
-            onClick={() => handleClick(index, item)}
-            className={`guess-cards ${isFlipped ? 'flipped' : ''}`}
+      <div
+        className="guess-card-container"
+        style={{ gridTemplateColumns: `repeat(${Math.sqrt(gridSize)}, 1fr)` }}
+      >
+        {allItems.slice(0, gridSize).map((item, index) => {
+          const isFlipped = opened.includes(index);
+
+          return (
+            <motion.div
+              key={`${gridSize}-${index}-${item}`}
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.36, delay: index * 0.02 }}
+            >
+              <div
+                onClick={() => handleClick(index)}
+                className={`guess-cards ${isFlipped ? 'flipped' : ''} `}
+              >
+                <div className="frontside">{item}</div>
+                <div className="backside" />
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <div className="text-center text-xl font-bold my-4">
+        {gameStatus === 'won' && <span className="text-green-600">🎉 You Won!</span>}
+        {gameStatus === 'lost' && <span className="text-red-600">❌ You Lost!</span>}
+      </div>
+
+      {gameStatus !== 'playing' && (
+        <div className="text-center mb-4">
+          <button
+            onClick={() => resetGame()}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
-            <div className="frontside">{item}</div>
-            <div className="backside"></div>
-           
-          </div>
-        );
-      })}
-    </div>
+            🔄 Play Again
+          </button>
+        </div>
+      )}
+    </>
   );
-};
+});
 
 export default Card;
