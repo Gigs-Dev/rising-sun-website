@@ -119,6 +119,7 @@ body {
   transform-style: preserve-3d;
   transition: transform 200ms linear;
   will-change: transform;
+  touch-action: manipulation;
 }
 
 /* flipped rotates the card to reveal .frontside */

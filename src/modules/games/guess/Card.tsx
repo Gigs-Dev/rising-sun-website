@@ -27,7 +27,8 @@ const Card: React.FC = memo(() => {
               transition={{ duration: 0.36, delay: index * 0.02 }}
             >
               <div
-                onClick={() => handleClick(index)}
+                // onClick={() => handleClick(index)}
+                onPointerDown={() => handleClick(index)} 
                 className={`guess-cards ${isFlipped ? 'flipped' : ''}`}
               >
                 <div className="frontside">{item}</div>
