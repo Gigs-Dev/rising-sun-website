@@ -29,7 +29,7 @@ const Card: React.FC = memo(() => {
 
   useEffect(() => {
     resetGame(gridSize);
-  }, [gridSize]);
+  }, [gridSize, resetGame]);
 
 
   const handleClick = useCallback((index: number) => {

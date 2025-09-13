@@ -12,6 +12,13 @@ import useUserStore from '@/store/state/use-user-state'
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { toastOptions } from '@/helpers/toastOptions';
+import type { AxiosError } from "axios";
+
+
+
+interface ErrorResponse {
+  message: string;
+}
 
 
 
@@ -39,9 +46,9 @@ const VerifyOtp = () => {
          router.replace('/')
       }
       
-    } catch (error: any) {
+    } catch (error) {
       console.error(error)
-      const err = error?.response?.data?.message || 'Something went wrong, please try again later';
+     const err = (error as AxiosError<ErrorResponse>)?.response?.data?.message || 'Something went wrong, please try again later';
       toast.error(`${err}`, { ...toastOptions })
     }
   }

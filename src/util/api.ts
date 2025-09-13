@@ -19,6 +19,11 @@ interface ApiResponse {
   data?: any;
 }
 
+interface ErrorResponse {
+  msg: string;
+}
+
+
 
 
 export const useAuthMutation = (user: string, type: 'sign-up' | 'sign-in') => {
@@ -44,8 +49,8 @@ export const useAuthMutation = (user: string, type: 'sign-up' | 'sign-in') => {
       //   router.push("/verify-otp");
       // }, 800);
     },
-    onError: (error: any) => {
-      toast.error(`${error?.response?.data?.msg || error.message || 'Something went wrong, please try again later'}`, {...toastOptions})
+    onError: (error) => {
+      toast.error(`${(error as AxiosError<ErrorResponse>)?.response?.data?.msg || error.message || 'Something went wrong, please try again later'}`, {...toastOptions})
       // console.error("Auth Error:", error.response?.data || error.message);
     },
   });
@@ -55,20 +60,20 @@ export const useAuthMutation = (user: string, type: 'sign-up' | 'sign-in') => {
 
 
 
-export const useVerifyOtpMutation = () => {
-  const mutation = useMutation({
-    mutationFn: async (data) => {
-      const res = await SERVER.post('/', data);
-      return res.data
-    },
-    onSuccess: (data) => {
+// export const useVerifyOtpMutation = () => {
+//   const mutation = useMutation({
+//     mutationFn: async (data) => {
+//       const res = await SERVER.post('/', data);
+//       return res.data
+//     },
+//     onSuccess: (data) => {
 
-    },
-    onError: (error) => {
+//     },
+//     onError: (error) => {
 
-    },
-  })
+//     },
+//   })
 
-  return mutation;
-}
+//   return mutation;
+// }
 
