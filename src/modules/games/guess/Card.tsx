@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, memo ,useCallback, useRef } from 'react';
+import React, { useEffect, useState, memo ,useCallback } from 'react';
 import { shuffle } from './shuffle';
 import CardSize from './CardSize';
 import { motion } from 'framer-motion';

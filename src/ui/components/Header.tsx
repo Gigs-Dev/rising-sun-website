@@ -12,7 +12,7 @@ import BrIcon from "@/svgs/br.svg";
 import MenuIcon from "@/svgs/menu.svg";
 import CloseIcon from "@/svgs/close.svg";
 import { TopBarData } from "@/data/top-bar-list";
-import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
+// import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import useUserStore from "@/store/state/use-user-state";
 import { useRouter } from "next/navigation";
 
@@ -24,27 +24,27 @@ const Header = () => {
   const router = useRouter()
 
   
-  const config = {
-    public_key: process.env.NEXT_FLUTTERWAVE_PUBLIC_KEY!,
-    tx_ref: Date.now().toString(),
-      amount: 100,
-      currency: 'NGN',
-      payment_options: 'card,mobilemoney,ussd',
-      customer: {
-        email: 'user@gmail.com',
-        phone_number: '070********',
-        name: 'john doe',
-      },
-      customizations: {
-        title: 'my Payment Title',
-        description: 'Payment for items in cart',
-        logo: 'https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg',
-      },
-    };
+  // const config = {
+  //   public_key: process.env.NEXT_FLUTTERWAVE_PUBLIC_KEY!,
+  //   tx_ref: Date.now().toString(),
+  //     amount: 100,
+  //     currency: 'NGN',
+  //     payment_options: 'card,mobilemoney,ussd',
+  //     customer: {
+  //       email: 'user@gmail.com',
+  //       phone_number: '070********',
+  //       name: 'john doe',
+  //     },
+  //     customizations: {
+  //       title: 'my Payment Title',
+  //       description: 'Payment for items in cart',
+  //       logo: 'https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg',
+  //     },
+  //   };
 
-  const handlePayment = useFlutterwave(config);
+  // const handlePayment = useFlutterwave(config);
 
-  const { token, logout, user } = useUserStore();
+  const { token, logout } = useUserStore();
 
   const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
@@ -97,13 +97,13 @@ const Header = () => {
           { token ?
             <span 
             onClick={() => {
-            handlePayment({
-              callback: (response) => {
-                console.log(response);
-                  closePaymentModal() 
-              },
-              onClose: () => {},
-            });
+            // handlePayment({
+            //   callback: (response) => {
+            //     console.log(response);
+            //       closePaymentModal() 
+            //   },
+            //   onClose: () => {},
+            // });
           }}
               className={`text-[.9rem] cursor-pointer pt-1 bg-[green]  p-3 rounded-md ${
                   isMenuOpen ? "py-[5px] text-center text-[#fff]" : "py-[0px]"
