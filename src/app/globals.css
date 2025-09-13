@@ -120,6 +120,7 @@ body {
   transition: transform 200ms linear;
   will-change: transform;
   touch-action: manipulation;
+  cursor: pointer;
 }
 
 /* flipped rotates the card to reveal .frontside */
@@ -128,10 +129,9 @@ body {
 }
 
 /* hover lift: use transform (composes with rotateY in a predictable way) */
-.guess-cards:hover{
-  cursor: pointer;
-  transform: translate3d(-5px, -5px, 0); /* <-- changed from `translate:` */
-}
+/* .guess-cards:hover{
+  transform: translate3d(-5px, -5px, 0); 
+} */
 
 .frontside,
 .backside{
@@ -171,7 +171,7 @@ body {
 }
 
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 560px) {
   .guess-cards{
     width: 65px;
     height: 56px;

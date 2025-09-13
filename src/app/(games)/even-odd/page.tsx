@@ -6,24 +6,14 @@ import { Text } from '@/ui/primitives/typography';
 import Image from "next/image";
 import { keyframes } from '@emotion/react';
 import ChipCarousel from './components/chipCarousel';
-import { useRouter } from 'next/navigation';
-import SideBar from './components/sidebar';
+
+
 
 // Icons
-import LeftarrowIcon from '@/svgs/leftarrow-2.svg';
-import Burger from "@/svgs/burger-2.svg";
-import Wallet from '@/svgs/wallet.svg';
-import emptyChipIcon from "@/svgs/empty_casino_chips.svg"; // Import the chip 
+import emptyChipIcon from "@/svgs/empty_casino_chips.svg"; 
 import CurvedText from './components/CurvedText';
 
-const diceFaces: Record<1 | 2 | 3 | 4 | 5 | 6, boolean[][]> = {
-  1: [[false, false, false], [false, true, false], [false, false, false]],
-  2: [[true, false, false], [false, false, false], [false, false, true]],
-  3: [[true, false, false], [false, true, false], [false, false, true]],
-  4: [[true, false, true], [false, false, false], [true, false, true]],
-  5: [[true, false, true], [false, true, false], [true, false, true]],
-  6: [[true, false, true], [true, false, true], [true, false, true]]
-}
+
 
 // Dice Rolling Animation
 const spin = keyframes `
@@ -35,7 +25,7 @@ const rollDice = (): number => Math.floor(Math.random() * 6) + 1;
 const MIN_BET = 10;
 const CHIP_SIZE = 30;
 
-const EvenOdd = () => {
+const EvenOddPage = () => {
   const [walletBalance, setWalletBalance] = useState<number>(1000000);
   const [dice, setDice] = useState<number[]>([0, 0, 0]);
   const [checkBalance, setCheckBalance] = useState<boolean>(false);
@@ -46,30 +36,13 @@ const EvenOdd = () => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [chipPosition, setChipPosition] = useState<number>(0); // 0 - 100%
   const isDragging = useRef<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [progress, setProgress] = useState<number>(0);
-  const router = useRouter();
 
-  // Handle the initial loading
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setLoading(false);
-          return 100;
-        }
-        return prev + 5;
-      });
-    }, 100);
-    return () => clearInterval(interval);
-  }, []);
+
 
   // Handle win and loses
-  // const [isChoice, setIsChoice] = useState<string>("");
   const [isRolling, setIsRolling] = useState<boolean>(false);
   const [isEven, setIsEven] = useState<boolean>(false);
-  const [isSideBarOpen, setIsSideBarOpen] = useState<boolean>(false);
+
 
   const maxBet = walletBalance;
   const formattedBetAmount = betAmount.toLocaleString();
@@ -96,8 +69,6 @@ const EvenOdd = () => {
     }
 
     setUserChoice(choice);
-    // console.log('user_choice:', userChoice);
-    // console.log('user_choice:', choice);
     setIsRolling(true);
     setDice([0, 0, 0]);
     setRolling([true, false, false]);
@@ -134,12 +105,11 @@ const EvenOdd = () => {
 
   // Check Result
   const checkResult = (finalDice: number[], choice: "even" | "odd") => {
-    // console.log('Final Dice:', finalDice);
+
     const total = finalDice.reduce((sum, num) => sum + num, 0);
-    // console.log('Total', total);
+
     const isEven = total % 2 === 0;
-    // console.log('Is Even:', isEven);
-    // console.log('User Choice:', userChoice);
+
     setIsEven(isEven);
     const allSame = finalDice.every((num) => num === finalDice[0]);
 
@@ -282,48 +252,22 @@ const EvenOdd = () => {
   };
 
   return (
-    <>
-      {/* <Box className={`relative m-auto mt-5 w-[400px] h-[700px]  shadow-xl ${loading ? 'h-[600px] bg-black bg-opacity-50 backdrop-blur-md rounded-md px-[2rem]' : ''}`}> */}
-      <Box className={`relative m-auto mt-5 w-full max-w-[400px] min-h-[700px] shadow-xl px-2 sm:px-0 ${loading ? 'h-[600px] bg-black bg-opacity-50 backdrop-blur-md rounded-md px-[2rem]' : ''}`}>
-        {loading ? (
-          <Flex className='justify-center flex-col h-[70%] items-center'>
-            <Text className='text-lg font-bold'>Loading...</Text>
-            <Box className='bg-gray-300 h-2 rounded-full mt-2 w-[80%]'>
-              <Box className='bg-blue-500 h-2 rounded-full transition-all duration-200' style={{ width: `${progress}%` }}>
-                <></>
-              </Box>
-            </Box>
-          </Flex>
-        ) : (
+  
           <>
-            <Box className=' even-odd-bg w-full rounded-b-[10%] border-[10px] border-t-0 border-[#17a2b8] pb-8'>
+            <Box className='even-odd-bg w-[400px] mx-auto md:w-[525px] rounded-[10px] h-full border-[10px] border-t-0 border-[#17a2b8] pb-8'>
               {/* Header */}
               <Box className="p-5 text-white">
-                <HStack className="justify-between items-center">
-                  <Image src={LeftarrowIcon} className='cursor-pointer' alt="return" width={20} height={20} onClick={() => router.back()} />
-                  <Text className="font-bold text-[1.3rem]">Even-Odd Game</Text>
-                  <Image src={Burger} className="cursor-pointer" alt="menu" width={30} onClick={() => setIsSideBarOpen(true)} />
-                    <SideBar 
-                      isOpen={isSideBarOpen} 
-                      onClose={() => setIsSideBarOpen(false)}
-                    />
+                <HStack className="flex justify-between items-center">
+                  <Text className="font-bold text-[20px] text-center mx-auto">Even-Odd Game</Text>
                 </HStack>
 
-                {/* Wallet */}
-                <Flex className="items-center gap-2 mt-6">
-                  <Image src={Wallet} alt="wallet" width={20} height={20} />
-                  <Text className="text-[1rem] relative top-[5px]">NGN{walletBalance.toLocaleString()}</Text>
-                </Flex>
-                <Text className="mt-2 text-green-500">+ Add Money</Text>
               </Box>
 
               {/* Dice */}
-              {/* <Flex className='gap-4 justify-center items-center mt-5'> */}
               <Flex className='gap-2 sm:gap-4 justify-center items-center mt-5'>
                 {dice.map((value, index) => (
                   <Box
                     key={index}
-                    // className={`w-16 h-16 bg-white border-2 border-black grid grid-cols-3 grid-rows-3 gap-1 p-1 rounded-md ${rolling[index] ? "animate-spin" : ""}`}
                     className={`w-12 h-12 sm:w-16 sm:h-16 bg-white border-2 border-black grid grid-cols-3 grid-rows-3 gap-1 p-1 rounded-md ${rolling[index] ? "animate-spin" : ""}`}
                     style={{
                       cursor: value === 0 ? "pointer" : "not-allowed",
@@ -460,43 +404,9 @@ const EvenOdd = () => {
               )}
             </Box>
 
-            {/* Even/Odd buttons with result highlighting */}
-            
-            {/* {!result ? (
-              <Flex className='justify-center m-auto mt-2 w-[350px]'>
-                <Box
-                  className={`cursor-pointer px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#0a9737]`}
-                  onClick={() => handleUserChoice("even")}
-                >
-                  <span>EVEN</span>
-                  <span className='text-[.9rem]'>Pays 2x</span>
-                </Box>
-                <Box
-                  className={`cursor-pointer px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#de9244]`}
-                  onClick={() => handleUserChoice("odd")}
-                >
-                  <span>ODD</span>
-                  <span className='text-[.9rem]'>Pays 2x</span>
-                </Box>
-              </Flex>
-            ) : (
-              <Flex className='justify-center m-auto mt-2 w-[400px] gap-2'>
-                <Box 
-                  className='cursor-pointer px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#0a9737]'
-                  onClick={handleRebet}
-                >
-                  REBET
-                </Box>
-                <Box 
-                  className='cursor-pointer px-3 py-2 w-[50%] font-semibold text-[1.5rem] flex flex-col items-center bg-[#0a9737]'
-                  onClick={handleNewRound}
-                >
-                  NEW ROUND
-                </Box>
-              </Flex>
-            )} */}
+    
             {!result ? (
-              <Flex className='justify-center m-auto mt-2 w-[95%] sm:w-[350px]'>
+              <Flex className='justify-center m-auto mt-2  w-[400px] md:w-[525px]'>
                 <Box
                   className={`cursor-pointer px-2 sm:px-3 py-2 w-[50%] font-semibold text-[1.2rem] sm:text-[1.5rem] flex flex-col items-center bg-[#0a9737]`}
                   onClick={() => handleUserChoice("even")}
@@ -513,7 +423,7 @@ const EvenOdd = () => {
                 </Box>
               </Flex>
             ) : (
-              <Flex className='justify-center m-auto mt-2 w-[95%] sm:w-[400px] gap-2'>
+              <Flex className='justify-center m-auto mt-2 w-[400px] md:w-[525px] gap-2'>
                 <Box 
                   className='cursor-pointer px-2 sm:px-3 py-2 w-[50%] font-semibold text-[1.2rem] sm:text-[1.5rem] flex flex-col items-center bg-[#0a9737]'
                   onClick={handleRebet}
@@ -529,12 +439,8 @@ const EvenOdd = () => {
               </Flex>
             )}
           </>
-        )}
         
-      
-      </Box>
-    </>
   );
 };
 
-export default EvenOdd;
+export default EvenOddPage;
