@@ -1,51 +1,102 @@
-'use client';
+import { useState, } from "react";
 
-import { useState, useCallback } from 'react';
+export const MIN_BET = 10;
 
-export type GameStatus = 'idle' | 'won' | 'lost';
+export function useDiceGame(initialBalance = 1000000) {
+  const [walletBalance, setWalletBalance] = useState(initialBalance);
+  const [dice, setDice] = useState<number[]>([0, 0, 0]);
+  const [rolling, setRolling] = useState<boolean[]>([false, false, false]);
+  const [isRolling, setIsRolling] = useState(false);
+  const [userChoice, setUserChoice] = useState<"even" | "odd" | null>(null);
+  const [result, setResult] = useState("");
+  const [isEven, setIsEven] = useState(false);
+  const [betAmount, setBetAmount] = useState(MIN_BET);
 
-export function useDiceGame(startingBalance = 1000) {
-  const [balance, setBalance] = useState(startingBalance);
-  const [bet, setBet] = useState(50);
-  const [dice, setDice] = useState<[number, number]>([1, 1]);
-  const [status, setStatus] = useState<GameStatus>('idle');
-  const [rolling, setRolling] = useState(false);
+  const maxBet = walletBalance;
 
-  const rollDice = useCallback(() => {
-    return [Math.ceil(Math.random() * 6), Math.ceil(Math.random() * 6)] as [number, number];
-  }, []);
+  const rollDice = () => Math.floor(Math.random() * 6) + 1;
 
-  const playRound = useCallback((choice: 'even' | 'odd') => {
-    if (rolling || bet > balance) return;
+  const handleUserChoice = (choice: "even" | "odd") => {
+    if (walletBalance < betAmount) {
+      setResult("Insufficient funds! Please add more money");
+      return;
+    }
+    setUserChoice(choice);
+    setIsRolling(true);
+    setDice([0, 0, 0]);
+    setRolling([true, false, false]);
+    rollDiceSequentially(0, [], choice);
+  };
 
-    setRolling(true);
-    setStatus('idle');
-
+  const rollDiceSequentially = (index: number, rolledValues: number[], choice: "even" | "odd") => {
+    if (index >= 3) {
+      checkResult(rolledValues, choice);
+      return;
+    }
     setTimeout(() => {
-      const newDice = rollDice();
-      const total = newDice[0] + newDice[1];
-      const outcome = total % 2 === 0 ? 'even' : 'odd';
+      const newNumber = rollDice();
+      const newDice = [...rolledValues, newNumber];
+      setDice(prev => {
+        const updated = [...prev];
+        updated[index] = newNumber;
+        return updated;
+      });
+      setRolling(prev => {
+        const updated = [...prev];
+        updated[index] = false;
+        if (index < 2) updated[index + 1] = true;
+        return updated;
+      });
+      rollDiceSequentially(index + 1, newDice, choice);
+    }, 800);
+  };
 
-      if (outcome === choice) {
-        setBalance(b => b + bet);
-        setStatus('won');
-      } else {
-        setBalance(b => b - bet);
-        setStatus('lost');
-      }
+  const checkResult = (finalDice: number[], choice: "even" | "odd") => {
+    const total = finalDice.reduce((sum, n) => sum + n, 0);
+    const even = total % 2 === 0;
+    setIsEven(even);
 
-      setDice(newDice);
-      setRolling(false);
-    }, 600);
-  }, [bet, balance, rollDice, rolling]);
+    let newBalance = walletBalance;
+    const allSame = finalDice.every(num => num === finalDice[0]);
+
+    if (allSame) {
+      setResult("All dice are the same. You lost!");
+      newBalance -= betAmount;
+    } else if ((even && choice === "even") || (!even && choice === "odd")) {
+      setResult(`You won! 🎉 Your winnings: ${betAmount * 2}`);
+      newBalance = newBalance - betAmount + betAmount * 2;
+    } else {
+      setResult("You lost! 😢");
+      newBalance -= betAmount;
+    }
+    setWalletBalance(newBalance);
+    setIsRolling(false);
+  };
+
+  const resetGame = () => {
+    setDice([0, 0, 0]);
+    setUserChoice(null);
+    setResult("");
+    setBetAmount(MIN_BET);
+  };
+
+  const rebet = () => {
+    if (userChoice) handleUserChoice(userChoice);
+  };
 
   return {
-    balance,
-    bet,
-    setBet,
+    walletBalance,
     dice,
-    status,
     rolling,
-    playRound,
+    isRolling,
+    userChoice,
+    result,
+    isEven,
+    betAmount,
+    setBetAmount,
+    maxBet,
+    handleUserChoice,
+    resetGame,
+    rebet,
   };
 }
