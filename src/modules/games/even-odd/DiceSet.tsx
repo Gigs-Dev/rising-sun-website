@@ -1,28 +1,38 @@
-'use client';
+import { Box, Flex } from "@/ui/primitives/ui-layout";
+import { keyframes } from "@emotion/react";
+import { diceFaces } from "./diceFaces";
 
-import React from 'react';
-import { motion } from 'framer-motion';
 
-interface DiceSetProps {
-  dice: [number, number];
-  rolling: boolean;
-}
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
 
-const DiceSet: React.FC<DiceSetProps> = ({ dice, rolling }) => {
+export default function Dice({ dice, rolling }: { dice: number[], rolling: boolean[] }) {
   return (
-    <div className="flex justify-center gap-6 my-4">
-      {dice.map((d, i) => (
-        <motion.div
-          key={i}
-          className="w-16 h-16 flex items-center justify-center bg-white rounded-lg shadow-md text-2xl font-bold"
-          animate={rolling ? { rotate: 360 } : { rotate: 0 }}
-          transition={{ duration: 0.6 }}
+    <Flex className="gap-2 sm:gap-4 justify-center items-center mt-5">
+      {dice.map((value, index) => (
+        <Box
+          key={index}
+          className={`w-12 h-12 sm:w-16 sm:h-16 bg-white border-2 border-black grid grid-cols-3 grid-rows-3 gap-1 p-1 rounded-md`}
+          style={{
+            animation: rolling[index] ? `${spin} 0.5s linear` : "none",
+          }}
         >
-          🎲 {d}
-        </motion.div>
+          {value !== 0 &&
+            diceFaces[value as 1 | 2 | 3 | 4 | 5 | 6].map((row, r) =>
+              row.map((dot, c) => (
+                <Box
+                  key={`${r}-${c}`}
+                  className={`w-2 h-2 rounded-full ${dot ? "bg-black" : "bg-transparent"}`}
+                  style={{ justifySelf: "center", alignSelf: "center" }}
+                >
+                  <></>
+                </Box>
+              ))
+            )}
+        </Box>
       ))}
-    </div>
+    </Flex>
   );
-};
-
-export default DiceSet;
+}

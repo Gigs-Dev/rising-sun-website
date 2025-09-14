@@ -1,4 +1,4 @@
-const diceFaces: Record<1 | 2 | 3 | 4 | 5 | 6, boolean[][]> = {
+export const diceFaces: Record<1 | 2 | 3 | 4 | 5 | 6, boolean[][]> = {
   1: [[false, false, false], [false, true, false], [false, false, false]],
   2: [[true, false, false], [false, false, false], [false, false, true]],
   3: [[true, false, false], [false, true, false], [false, false, true]],
@@ -6,4 +6,3 @@ const diceFaces: Record<1 | 2 | 3 | 4 | 5 | 6, boolean[][]> = {
   5: [[true, false, true], [false, true, false], [true, false, true]],
   6: [[true, false, true], [true, false, true], [true, false, true]]
 }
-''
