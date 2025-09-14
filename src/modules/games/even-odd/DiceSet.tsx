@@ -2,7 +2,6 @@ import { Box, Flex } from "@/ui/primitives/ui-layout";
 import { keyframes } from "@emotion/react";
 import { diceFaces } from "./diceFaces";
 
-// const diceFaces: Record<1 | 2 | 3 | 4 | 5 | 6, boolean[][]> = { ... }
 
 const spin = keyframes`
   0% { transform: rotate(0deg); }

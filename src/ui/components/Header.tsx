@@ -23,25 +23,6 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const router = useRouter()
 
-  
-  // const config = {
-  //   public_key: process.env.NEXT_FLUTTERWAVE_PUBLIC_KEY!,
-  //   tx_ref: Date.now().toString(),
-  //     amount: 100,
-  //     currency: 'NGN',
-  //     payment_options: 'card,mobilemoney,ussd',
-  //     customer: {
-  //       email: 'user@gmail.com',
-  //       phone_number: '070********',
-  //       name: 'john doe',
-  //     },
-  //     customizations: {
-  //       title: 'my Payment Title',
-  //       description: 'Payment for items in cart',
-  //       logo: 'https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg',
-  //     },
-  //   };
-
   // const handlePayment = useFlutterwave(config);
 
   const { token, logout } = useUserStore();
@@ -73,16 +54,33 @@ const Header = () => {
           />
         </Box>
 
-        {/* Menu icon for small screens */}
-        <Box className="lg:hidden cursor-pointer" onClick={toggleMenu}>
-          <Image
-            priority
-            src={isMenuOpen ? CloseIcon : MenuIcon}
-            alt="menu"
-            width={24}
-            height={24}
-          />
-        </Box>
+        <section className="flex items-center gap-4">
+          <HStack className="md:hidden border border-[#555] inline-flex bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[1.3rem] gap-2 cursor-pointer">
+              <Link href="/sign-in" className="">
+                <Text className="text-[.9rem] text-[#000000] font-regular pt-1">
+                  Sign In
+                </Text>
+              </Link>
+              <Image
+                priority
+                src={BrIcon}
+                alt="arrow-right"
+                width={20}
+                height={20}
+              />
+          </HStack>
+
+          {/* Menu icon for small screens */}
+          <Box className="lg:hidden cursor-pointer" onClick={toggleMenu}>
+            <Image
+              priority
+              src={isMenuOpen ? CloseIcon : MenuIcon}
+              alt="menu"
+              width={24}
+              height={24}
+            />
+          </Box>
+        </section>
 
         {/* Menu items */}
         <Flex
@@ -137,7 +135,7 @@ const Header = () => {
             <HStack
               className={`${
                 isMenuOpen ? "border border-[#555]" : ""
-              } inline-flex bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[1.3rem] gap-2 cursor-pointer`}
+              } hidden md:inline-flex bg-[#ffffff] text-center py-[.4rem] rounded-[10px] px-[1.3rem] gap-2 cursor-pointer`}
             >
               <Link href="/sign-in">
                 <Text className="text-[.9rem] text-[#000000] font-regular pt-1">
